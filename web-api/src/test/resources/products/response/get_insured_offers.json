@@ -1,0 +1,28 @@
+{
+  "links" : [ ],
+  "content" : [ {
+    "id" : "21",
+    "insuredId" : "1",
+    "startDate" : [ 2025, 1, 1 ],
+    "offerings" : {
+      "links" : [ ],
+      "content" : [ ]
+    },
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost/offers/21"
+    } ]
+  }, {
+    "id" : "22",
+    "insuredId" : "1",
+    "startDate" : [ 2025, 4, 1 ],
+    "offerings" : {
+      "links" : [ ],
+      "content" : [ ]
+    },
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost/offers/22"
+    } ]
+  } ]
+}

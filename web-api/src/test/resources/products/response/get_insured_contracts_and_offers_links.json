@@ -1,0 +1,9 @@
+{
+  "links" : [ {
+    "rel" : "contracts",
+    "href" : "http://localhost/insured/1/contracts"
+  }, {
+    "rel" : "offers",
+    "href" : "http://localhost/insured/1/offers"
+  } ]
+}

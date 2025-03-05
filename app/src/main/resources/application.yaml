@@ -1,0 +1,25 @@
+springdoc:
+  api-docs:
+    path: /api
+  swagger-ui:
+      path: /swagger-ui
+
+spring:
+  profiles:
+    active: dev
+  h2:
+    console.enabled: true
+    console.path: /h2-console
+  mvc:
+    format:
+      date: yyyy-MM-dd
+      date-time: yyyy-MM-dd HH:mm:ss
+
+server:
+  port: 8082
+
+logging:
+  file:
+    name: app.log
+  level:
+    pl.mpietrewicz.insurance.product: DEBUG

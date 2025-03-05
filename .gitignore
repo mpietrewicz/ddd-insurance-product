@@ -1,0 +1,7 @@
+# Default ignored files
+*.iml
+.idea/
+/target/
+*/target/
+*.log
+*.log.*

@@ -1,0 +1,7 @@
+{
+  "id" : "1",
+  "name" : "Product P",
+  "premium" : 22.55,
+  "maxEntryAge" : 99,
+  "links" : [ ]
+}

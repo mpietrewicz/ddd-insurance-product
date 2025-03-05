@@ -1,0 +1,20 @@
+package pl.mpietrewicz.insurance.product.domain.service.offer;
+
+import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
+import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
+import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
+import pl.mpietrewicz.insurance.product.domain.dto.OfferingContext;
+import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
+import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+
+import java.util.List;
+
+public interface OfferingAvailabilityService {
+
+    List<AvailableOffering> getAvailableOfferings(ApplicantData applicantData, List<Product> allProducts,
+                                                  List<Contract> allContracts, Offer offer);
+
+    Long addOffering(OfferingContext offeringContext, ApplicantData applicantData, List<Contract> allContracts,
+                     List<Product> allProducts);
+
+}

@@ -1,0 +1,24 @@
+{
+  "id" : "1",
+  "contractModels" : {
+    "links" : [ ],
+    "content" : [ ]
+  },
+  "offerModels" : {
+    "links" : [ ],
+    "content" : [ {
+      "id" : "21",
+      "insuredId" : "1",
+      "startDate" : [ 2025, 1, 1 ],
+      "offeredProducts" : null,
+      "links" : [ {
+        "rel" : "self",
+        "href" : "http://localhost/offers/21"
+      } ]
+    } ]
+  },
+  "links" : [ {
+    "rel" : "all-offers",
+    "href" : "http://localhost/offers/1"
+  } ]
+}
