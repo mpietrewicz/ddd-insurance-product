@@ -1,0 +1,31 @@
+{
+  "id" : "1",
+  "insuredId" : "11",
+  "startDate" : [ 2024, 1, 1 ],
+  "offerings" : {
+    "links" : [ ],
+    "content" : [ {
+      "id" : 11,
+      "productId" : "101",
+      "startDate" : [ 2025, 1, 1 ],
+      "promotion" : true,
+      "links" : [ {
+        "rel" : "self",
+        "href" : "http://localhost/offers/1/offerings/11"
+      } ]
+    }, {
+      "id" : 12,
+      "productId" : "102",
+      "startDate" : [ 2025, 3, 1 ],
+      "promotion" : true,
+      "links" : [ {
+        "rel" : "self",
+        "href" : "http://localhost/offers/1/offerings/12"
+      } ]
+    } ]
+  },
+  "links" : [ {
+    "rel" : "available-offerings",
+    "href" : "http://localhost/offers/1/offerings/available"
+  } ]
+}

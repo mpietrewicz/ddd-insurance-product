@@ -1,0 +1,17 @@
+{
+  "links" : [ {
+    "rel" : "add-offering",
+    "href" : "http://localhost/offers/1/offerings"
+  } ],
+  "content" : [ {
+    "productId" : "101",
+    "startDateOptions" : [ [ 2025, 1, 1 ], [ 2025, 2, 1 ] ],
+    "promotionOptions" : [ true, false ],
+    "links" : [ ]
+  }, {
+    "productId" : "202",
+    "startDateOptions" : [ [ 2025, 1, 1 ], [ 2025, 2, 1 ] ],
+    "promotionOptions" : [ true, false ],
+    "links" : [ ]
+  } ]
+}

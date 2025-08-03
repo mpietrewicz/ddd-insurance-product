@@ -1,0 +1,13 @@
+{
+  "id" : 3,
+  "productId" : "101",
+  "startDate" : [ 2025, 1, 1 ],
+  "promotion" : false,
+  "links" : [ {
+    "rel" : "update-offering",
+    "href" : "http://localhost/offers/1/offerings/3"
+  }, {
+    "rel" : "delete-offering",
+    "href" : "http://localhost/offers/1/offerings/3"
+  } ]
+}

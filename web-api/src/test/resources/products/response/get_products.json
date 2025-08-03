@@ -1,0 +1,19 @@
+{
+  "links" : [ {
+    "rel" : "self",
+    "href" : "http://localhost/products"
+  }, {
+    "rel" : "create-product",
+    "href" : "http://localhost/products"
+  } ],
+  "content" : [ {
+    "id" : "1",
+    "name" : "Product P",
+    "premium" : 10.5,
+    "maxEntryAge" : 75,
+    "links" : [ {
+      "rel" : "self",
+      "href" : "http://localhost/products/1"
+    } ]
+  } ]
+}
