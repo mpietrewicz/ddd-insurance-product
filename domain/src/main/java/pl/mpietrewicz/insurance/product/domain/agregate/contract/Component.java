@@ -4,13 +4,17 @@ import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import lombok.NoArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
 import pl.mpietrewicz.insurance.ddd.support.infrastructure.repo.BaseEntity;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
 import java.util.Optional;
+
+import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.NO_PROMOTION;
 
 @Entity
 @NoArgsConstructor
@@ -27,13 +31,14 @@ public class Component extends BaseEntity {
     @Embedded
     private Premium premium;
 
-    private boolean promotional;
+    @Enumerated
+    private PromotionType promotionType;
 
-    public Component(ProductId productId, LocalDate startDate, Premium premium, boolean promotional) {
+    public Component(ProductId productId, LocalDate startDate, Premium premium, PromotionType promotionType) {
         this.productId = productId;
         this.startDate = startDate;
         this.premium = premium;
-        this.promotional = promotional;
+        this.promotionType = promotionType;
     }
 
     public boolean isSameProduct(ProductId productId) {
@@ -51,7 +56,7 @@ public class Component extends BaseEntity {
     }
 
     private boolean isPromotionUsed() {
-        return promotional && endDate.isAfter(startDate);
+        return promotionType != NO_PROMOTION && endDate.isAfter(startDate);
     }
 
 }

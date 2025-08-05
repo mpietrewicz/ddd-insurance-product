@@ -1,18 +1,23 @@
 package pl.mpietrewicz.insurance.product.webapi.dto.request;
 
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+@Builder
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,7 +49,11 @@ public class CreateProductRequest {
     @Schema(description = "Indicates if the product is available only for healthy insured persons.", example = "true")
     private boolean forHealthyOnly;
 
-    @Schema(description = "Type of promotion allowed for this product.", example = "NO_PROMOTION")
-    private PromotionType promotionType;
+    @Schema(description = "Types of promotion allowed for this product.", example = "[NO_PROMOTION, SINGLE_PROMOTION]")
+    @ArraySchema(schema = @Schema(type = "string",
+            allowableValues = {"NO_PROMOTION", "SINGLE_PROMOTION", "DOUBLE_PROMOTION", "PROMOTION_AFTER_TWO_YEARS"}))
+    @NotNull
+    @Builder.Default
+    private List<PromotionType> promotionTypes = new ArrayList<>();
 
 }

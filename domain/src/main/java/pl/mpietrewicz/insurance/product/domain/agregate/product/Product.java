@@ -1,6 +1,9 @@
 package pl.mpietrewicz.insurance.product.domain.agregate.product;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -41,8 +44,11 @@ public class Product extends BaseAggregateRoot<ProductId> {
 
     private LocalDate validTo;
 
+    @ElementCollection()
+    @CollectionTable(name = "product_promotion")
+    @Column(name = "promotion_type")
     @Enumerated(EnumType.STRING)
-    private PromotionType promotionType;
+    private List<PromotionType> promotionTypes;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "product_id")
@@ -54,7 +60,7 @@ public class Product extends BaseAggregateRoot<ProductId> {
         this.premium = basicProductData.getPremium();
         this.validFrom = basicProductData.getValidFrom();
         this.validTo = basicProductData.getValidTo();
-        this.promotionType = basicProductData.getPromotionType();
+        this.promotionTypes = basicProductData.getPromotionTypes();
         this.eligibilityList = eligibilityList;
     }
 
@@ -76,8 +82,8 @@ public class Product extends BaseAggregateRoot<ProductId> {
                 && (validTo == null || isBeforeOrEqual(date, validTo));
     }
 
-    public PromotionType getPromotionType() {
-        return promotionType;
+    public List<PromotionType> getPromotionTypes() {
+        return promotionTypes;
     }
 
     public Premium getPremium() {

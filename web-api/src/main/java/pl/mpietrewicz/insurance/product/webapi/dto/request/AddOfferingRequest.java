@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 @Getter
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class AddOfferingRequest {
     @Schema(description = "ID of the product associated with the offering.")
     private final ProductId productId;
 
-    @Schema(description = "Indicates promotion offer.", example = "true")
-    private Boolean promotion;
+    @Schema(description = "Promotion type for the offering", example = "SINGLE_PROMOTION")
+    private PromotionType promotionType;
 
 }

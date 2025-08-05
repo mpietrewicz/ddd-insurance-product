@@ -21,6 +21,7 @@ import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingContextF
 import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class OfferingServiceImpl implements OfferingService {
     }
 
     @Override
-    public Long addOffering(OfferId offerId, ProductId productId, boolean promotion) {
+    public Long addOffering(OfferId offerId, ProductId productId, PromotionType promotionType) {
         Offer offer = getOffer(offerId);
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();
@@ -62,7 +63,7 @@ public class OfferingServiceImpl implements OfferingService {
         List<Contract> allContracts = contractRepository.getAllContractsFor(insuredId);
         List<Product> allProducts = productRepository.loadAll();
         ApplicantData applicantData = applicantDataProvider.get(applicantId);
-        OfferingContext offeringContext = offeringContextFactory.create(offer, product, promotion);
+        OfferingContext offeringContext = offeringContextFactory.create(offer, product, promotionType);
 
         return offeringAvailabilityService.addOffering(offeringContext, applicantData, allContracts, allProducts);
     }

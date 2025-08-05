@@ -18,6 +18,7 @@ import pl.mpietrewicz.insurance.ddd.support.infrastructure.repo.BaseAggregateRoo
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedOffer;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domain.service.offer.policy.OfferStartPolicy;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotChangeStartDateException;
 
@@ -67,8 +68,8 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return startDate;
     }
 
-    public Long addOffering(ProductId productId, Premium premium, boolean promotion) {
-        Offering offering = new Offering(productId, premium, promotion);
+    public Long addOffering(ProductId productId, Premium premium, PromotionType promotionType) {
+        Offering offering = new Offering(productId, premium, promotionType);
         offerings.add(offering);
         return offering.getEntityId();
     }

@@ -19,7 +19,7 @@ public class ProductFactory {
                 .premium(productData.getPremium())
                 .validFrom(productData.getValidFrom())
                 .validTo(productData.getValidTo())
-                .promotionType(productData.getPromotionType())
+                .promotionTypes(productData.getPromotionTypes())
                 .build();
         List<Eligibility> eligibilityList = createEligibilityList(productData.getInsuredRequirements());
 

@@ -15,7 +15,7 @@ public class AvailableOfferingConverterImpl implements AvailableOfferingConverte
     public AvailableOfferingModel convert(AvailableOffering availableOffering) {
         return AvailableOfferingModel.builder()
                 .productId(availableOffering.getProductId())
-                .promotionOptions(availableOffering.getPromotionOptions())
+                .availablePromotions(availableOffering.getAvailablePromotions())
                 .build();
     }
 

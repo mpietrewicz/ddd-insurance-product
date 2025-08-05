@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.DomainService;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
@@ -46,8 +47,8 @@ public class OfferingAvailabilityServiceImpl implements OfferingAvailabilityServ
         if (isProductAvailable(offeringContext, applicantData, allContracts, allProducts)) {
             ProductId productId = offeringContext.getProductId();
             Premium premium = offeringContext.getPremium();
-            boolean promotion = offeringContext.isPromotion();
-            return offer.addOffering(productId, premium, promotion);
+            PromotionType promotionType = offeringContext.getPromotionType();
+            return offer.addOffering(productId, premium, promotionType);
         } else {
             throw new ProductNotAvailableException(offer.getOfferId());
         }
@@ -57,12 +58,12 @@ public class OfferingAvailabilityServiceImpl implements OfferingAvailabilityServ
                                        List<Contract> allContracts, List<Product> allProducts) {
         Offer offer = offeringContext.getOffer();
         ProductId productId = offeringContext.getProductId();
-        boolean promotion = offeringContext.isPromotion();
+        PromotionType promotionType = offeringContext.getPromotionType();
 
         List<AvailableOffering> availableOfferings = getAvailableOfferings(applicantData, allProducts, allContracts, offer);
         return availableOfferings.stream()
-                .filter(availableOffering -> availableOffering.getProductId().equals(productId))
-                .anyMatch(availableOffering -> availableOffering.getPromotionOptions().contains(promotion));
+                .filter(offering -> offering.getProductId().equals(productId))
+                .anyMatch(offering -> offering.getAvailablePromotions().contains(promotionType));
     }
 
 }

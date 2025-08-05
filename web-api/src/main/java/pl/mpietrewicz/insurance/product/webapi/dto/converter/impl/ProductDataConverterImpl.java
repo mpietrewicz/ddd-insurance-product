@@ -22,7 +22,7 @@ public class ProductDataConverterImpl implements ProductDataConverter {
                 .validFrom(createProductRequest.getValidFrom())
                 .validTo(createProductRequest.getValidTo())
                 .insuredRequirements(insuredRequirements)
-                .promotionType(createProductRequest.getPromotionType())
+                .promotionTypes(createProductRequest.getPromotionTypes())
                 .build();
     }
 

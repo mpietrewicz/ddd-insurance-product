@@ -5,6 +5,7 @@ import lombok.Getter;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -22,6 +23,6 @@ public class ProductData {
 
     private InsuredRequirements insuredRequirements;
 
-    private PromotionType promotionType;
+    private List<PromotionType> promotionTypes;
 
 }

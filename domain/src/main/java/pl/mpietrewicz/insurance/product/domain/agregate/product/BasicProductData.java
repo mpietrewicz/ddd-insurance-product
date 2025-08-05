@@ -6,6 +6,7 @@ import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @Getter
@@ -19,6 +20,6 @@ public class BasicProductData {
 
     private LocalDate validTo;
 
-    private PromotionType promotionType;
+    private List<PromotionType> promotionTypes;
 
 }

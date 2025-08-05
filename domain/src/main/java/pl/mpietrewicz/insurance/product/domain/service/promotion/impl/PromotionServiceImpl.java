@@ -5,27 +5,36 @@ import pl.mpietrewicz.insurance.ddd.annotations.domain.DomainService;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.UsedPromotion;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
-import pl.mpietrewicz.insurance.product.domain.service.promotion.PromotionEligibilityService;
-import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionAvailabilityPolicy;
+import pl.mpietrewicz.insurance.product.domain.service.promotion.PromotionService;
+import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.impl.NoPromotionPolicy;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-public class PromotionEligibilityServiceImpl implements PromotionEligibilityService {
+public class PromotionServiceImpl implements PromotionService {
 
-    private final List<PromotionAvailabilityPolicy> promotionPolicies;
+    private final List<PromotionPolicy> promotionPolicies;
 
     private final NoPromotionPolicy noPromotionPolicy;
 
     @Override
-    public boolean canOfferPromotion(Product product, List<Contract> contracts, LocalDate offerStartDate) {
-        PromotionAvailabilityPolicy promotionAvailabilityPolicy = getPromotionPolicy(product);
-        List<UsedPromotion> usedPromotions = getUsedPromotions(product, contracts);
+    public List<PromotionType> getAvailablePromotions(Product product, List<Contract> contracts,
+                                                      LocalDate offerStartDate) {
+        return promotionPolicies.stream()
+                .filter(policy -> policy.isSupportedBy(product))
+                .filter(policy -> policy.canOffer(offerStartDate, getUsedPromotions(product, contracts)))
+                .map(PromotionPolicy::getPromotionType)
+                .toList();
+        // todo: to tutaj powinienem zwracać od razu harmonogram składek po promocji
+    }
 
-        return promotionAvailabilityPolicy.isAvailable(offerStartDate, usedPromotions);
+    @Override
+    public boolean calculateDiscount(PromotionType promotionType, Product product) {
+        return false;
     }
 
     private static List<UsedPromotion> getUsedPromotions(Product product, List<Contract> contracts) {
@@ -34,7 +43,7 @@ public class PromotionEligibilityServiceImpl implements PromotionEligibilityServ
                 .toList();
     }
 
-    private PromotionAvailabilityPolicy getPromotionPolicy(Product product) {
+    private PromotionPolicy getPromotionPolicy(Product product) {
         return promotionPolicies.stream()
                 .filter(policy -> policy.isSupportedBy(product))
                 .findAny()

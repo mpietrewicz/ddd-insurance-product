@@ -15,10 +15,15 @@ import pl.mpietrewicz.insurance.product.domainapi.ProductService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.InsuredRequirements;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.ProductData;
-import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
+
+import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.DOUBLE_PROMOTION;
+import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.NO_PROMOTION;
+import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.PROMOTION_AFTER_TWO_YEARS;
+import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.SINGLE_PROMOTION;
 
 @Component
 @Profile("dev")
@@ -37,19 +42,19 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
         log.info("Development profile active. Setting initial data...");
 
         log.info("Setting products...");
-        ProductData productNw = preapareProductData("Product NW", "12.5", true,
+        ProductData productNw = preapareProductData("Product NW", "12.5",
                 "2025-01-01", "2029-12-31", 70, false);
         ProductId productNwId = productService.createProduct(productNw);
 
-        ProductData productTu = preapareProductData("Product TU", "9", true,
+        ProductData productTu = preapareProductData("Product TU", "9",
                 "2020-01-01", "2025-12-31", 80, true);
         ProductId productTuId = productService.createProduct(productTu);
 
-        ProductData productAu = preapareProductData("Product AU", "13.75", false,
+        ProductData productAu = preapareProductData("Product AU", "13.75",
                 "1999-01-01", "2025-10-31", 99, false);
         ProductId productAuId = productService.createProduct(productAu);
 
-        ProductData productHl = preapareProductData("Product HEALTH", "25", false,
+        ProductData productHl = preapareProductData("Product HEALTH", "25",
                 "2025-07-01", "2027-12-31", 65, true);
         ProductId productHlId = productService.createProduct(productHl);
 
@@ -63,17 +68,17 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
         ApplicantData analystApplicant = prepareApplicantData("analyst", "1969-09-01", true, "analyst");
         offerService.createOffer(analystApplicant, LocalDate.parse("2025-06-01"));
 
-        offeringService.addOffering(offerId, productNwId, true);
-        offeringService.addOffering(offerId, productTuId, false);
-        offeringService.addOffering(offerId, productAuId, false);
+        offeringService.addOffering(offerId, productNwId, SINGLE_PROMOTION);
+        offeringService.addOffering(offerId, productTuId, DOUBLE_PROMOTION);
+        offeringService.addOffering(offerId, productAuId, PROMOTION_AFTER_TWO_YEARS);
 
 //        offerService.acceptOffer(offerId);
 
         log.info("Data setting finished.");
     }
 
-    private static ProductData preapareProductData(String name, String premium, boolean promotional, String validFrom,
-                                                   String validTo, int maxEntryAge, boolean forHealthyOnly) {
+    private static ProductData preapareProductData(String name, String premium, String validFrom, String validTo,
+                                                   int maxEntryAge, boolean forHealthyOnly) {
         return ProductData.builder()
                 .name(name)
                 .premium(Premium.valueOf(new BigDecimal(premium)))
@@ -83,7 +88,7 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
                         .maxEntryAge(maxEntryAge)
                         .forHealthyOnly(forHealthyOnly)
                         .build())
-                .promotionType(PromotionType.SINGLE_PROMOTION)
+                .promotionTypes(List.of(NO_PROMOTION, SINGLE_PROMOTION, DOUBLE_PROMOTION, PROMOTION_AFTER_TWO_YEARS))
                 .build();
     }
 

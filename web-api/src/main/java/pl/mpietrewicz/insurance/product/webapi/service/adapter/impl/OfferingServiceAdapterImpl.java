@@ -7,6 +7,7 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferingServiceAdapter;
 import pl.mpietrewicz.insurance.product.webapi.dto.converter.ApplicantDataConverter;
 import pl.mpietrewicz.insurance.product.webapi.dto.converter.AvailableOfferingConverter;
@@ -34,9 +35,9 @@ public class OfferingServiceAdapterImpl implements OfferingServiceAdapter {
     @Override
     public Long addOffering(OfferId offerId, AddOfferingRequest addOfferingRequest) {
         ProductId productId = addOfferingRequest.getProductId();
-        Boolean promotion = addOfferingRequest.getPromotion();
+        PromotionType promotionType = addOfferingRequest.getPromotionType();
 
-        return offeringService.addOffering(offerId, productId, promotion);
+        return offeringService.addOffering(offerId, productId, promotionType);
     }
 
 }

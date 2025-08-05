@@ -9,6 +9,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.contract.Component;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedOffer;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -34,10 +35,10 @@ public class ContractFactory {
 
     private Component createComponent(LocalDate startDate, AcceptedProduct acceptedProduct) {
         ProductId productId = acceptedProduct.getProductId();
-        boolean promotional = acceptedProduct.isPromotional();
+        PromotionType promotionType = acceptedProduct.getPromotionType();
         Premium premium = acceptedProduct.getPremium();
 
-        return new Component(productId, startDate, premium, promotional);
+        return new Component(productId, startDate, premium, promotionType);
     }
 
 }

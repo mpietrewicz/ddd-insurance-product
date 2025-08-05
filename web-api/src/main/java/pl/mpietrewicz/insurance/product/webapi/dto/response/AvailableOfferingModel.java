@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.util.List;
 
@@ -16,9 +17,8 @@ public class AvailableOfferingModel extends RepresentationModel<AvailableOfferin
     @Schema(description = "The ID of the product associated with this offering.")
     private ProductId productId;
 
-    @Schema(description = "List of promotional flags for the offering options, " +
-            "where each value indicates whether the corresponding option is promotional.",
-            example = "[true, false]")
-    private List<Boolean> promotionOptions;
+    @Schema(description = "List of available promotion types for the offering",
+            example = "[NO_PROMOTION, SINGLE_PROMOTION]")
+    private List<PromotionType> availablePromotions;
 
 }
