@@ -79,7 +79,7 @@ public class OfferingController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Available offerings retrieved successfully")
     })
-    @PostMapping("/available")
+    @GetMapping("/available")
     public CollectionModel<AvailableOfferingModel> getAvailableOfferings(@PathVariable OfferId offerId) {
         CollectionModel<AvailableOfferingModel> availableOfferings = offeringServiceAdapter.getAvailableOfferings(offerId);
 
