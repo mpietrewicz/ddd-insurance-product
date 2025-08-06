@@ -16,9 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ContractId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
-import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
 import pl.mpietrewicz.insurance.product.domainapi.OfferService;
+import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.CanAcceptOfferModel;
 
 import static pl.mpietrewicz.insurance.product.webapi.controller.ContractController.getLinkToGetContract;
@@ -26,7 +25,7 @@ import static pl.mpietrewicz.insurance.product.webapi.controller.ContractControl
 @RestController
 @RequestMapping("/offers/{offerId}/accept")
 @RequiredArgsConstructor
-@Tag(name = "Accept offers", description = "Check if an offer can be accepted and accept offers")
+@Tag(name = "Offer actions", description = "Operations for managing offer acceptance and start date modifications")
 public class OfferAcceptController {
 
     private final OfferService offerService;
@@ -61,11 +60,6 @@ public class OfferAcceptController {
         model.add(getLinkToGetContract(contractId).withRel("created-contract"));
         return ResponseEntity.ok()
                 .body(model);
-    }
-
-    @ExceptionHandler(OfferNotFoundException.class)
-    public ResponseEntity<Void> handleNotFound(OfferNotFoundException e) {
-        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(CannotAcceptOfferException.class)

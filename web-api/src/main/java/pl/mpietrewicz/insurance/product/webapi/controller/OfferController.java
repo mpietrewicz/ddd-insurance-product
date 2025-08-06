@@ -9,14 +9,12 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ApplicantId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
 import pl.mpietrewicz.insurance.product.domainapi.OfferService;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.OfferModel;
 import pl.mpietrewicz.insurance.product.webapi.service.model.OfferModelService;
@@ -68,11 +66,6 @@ public class OfferController {
         model.add(getLinkToGetOffers(applicantId).withRel("other-offers"));
         return ResponseEntity.ok()
                 .body(model);
-    }
-
-    @ExceptionHandler(OfferNotFoundException.class)
-    public ResponseEntity<Void> handleNotFound(OfferNotFoundException e) {
-        return ResponseEntity.notFound().build();
     }
 
     public static Link getLinkToGetOffer(OfferId offerId) {

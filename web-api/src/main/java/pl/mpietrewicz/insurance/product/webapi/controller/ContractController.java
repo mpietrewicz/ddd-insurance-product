@@ -75,11 +75,6 @@ public class ContractController {
                 .body(new RepresentationModel<>());
     }
 
-    @ExceptionHandler(ContractNotFoundException.class)
-    public ResponseEntity<Void> handleNotFound(ContractNotFoundException e) {
-        return ResponseEntity.notFound().build();
-    }
-
     public static Link getLinkToGetContract(ContractId contractId) {
         return linkTo(methodOn(ContractController.class)
                 .getContract(contractId)).withSelfRel();

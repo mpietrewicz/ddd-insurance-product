@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
-import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ProductNotFoundException;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.AddOfferingRequest;
@@ -30,8 +28,6 @@ import pl.mpietrewicz.insurance.product.webapi.dto.response.AvailableOfferingMod
 import pl.mpietrewicz.insurance.product.webapi.dto.response.OfferingModel;
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferingServiceAdapter;
 import pl.mpietrewicz.insurance.product.webapi.service.model.OfferingModelService;
-
-import java.util.NoSuchElementException;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -123,11 +119,6 @@ public class OfferingController {
         model.add(getLinkToGetOfferings(offerId).withRel("other-offerings"));
         return ResponseEntity.ok()
                 .body(model);
-    }
-
-    @ExceptionHandler({ProductNotFoundException.class, OfferNotFoundException.class})
-    public ResponseEntity<Void> handleResourceNotFoundException(NoSuchElementException exception) {
-        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(ProductNotAvailableException.class)

@@ -17,9 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.exception.CannotChangeStartDateException;
-import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
 import pl.mpietrewicz.insurance.product.domainapi.OfferService;
+import pl.mpietrewicz.insurance.product.domainapi.exception.CannotChangeStartDateException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -30,7 +29,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/offers/{offerId}/start")
 @RequiredArgsConstructor
-@Tag(name = "Accept offers", description = "Check if an offer can be accepted and accept offers")
+@Tag(name = "Offer actions", description = "Operations for managing offer acceptance and start date modifications")
 public class OfferStartController {
 
     private final OfferService offerService;
@@ -69,11 +68,6 @@ public class OfferStartController {
 
         return ResponseEntity.ok()
                 .body(new RepresentationModel<>());
-    }
-
-    @ExceptionHandler(OfferNotFoundException.class)
-    public ResponseEntity<Void> handleNotFound(OfferNotFoundException e) {
-        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(CannotChangeStartDateException.class)

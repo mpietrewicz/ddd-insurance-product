@@ -12,7 +12,6 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +19,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
-import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ProductNotFoundException;
-import pl.mpietrewicz.insurance.product.webapi.service.adapter.ProductServiceAdapter;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.CreateProductRequest;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.ProductModel;
+import pl.mpietrewicz.insurance.product.webapi.service.adapter.ProductServiceAdapter;
 import pl.mpietrewicz.insurance.product.webapi.service.model.ProductModelService;
 
 import java.net.URI;
@@ -79,11 +77,6 @@ public class ProductController {
 
         URI productLocation = getLinkToGetProduct(productId).toUri();
         return ResponseEntity.created(productLocation).build();
-    }
-
-    @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<Void> handleNotFound(ProductNotFoundException e) {
-        return ResponseEntity.notFound().build();
     }
 
     private static Link getLinkToGetProduct(ProductId productId) {
