@@ -21,4 +21,7 @@ public class AvailableOfferingModel extends RepresentationModel<AvailableOfferin
             example = "[NO_PROMOTION, SINGLE_PROMOTION]")
     private List<PromotionType> availablePromotions;
 
+    @Schema(description = "Schedule of premium")
+    private PremiumScheduleModel premiumSchedule;
+
 }

@@ -15,4 +15,6 @@ public class AvailableOffering {
 
     private final List<PromotionType> availablePromotions;
 
+    private final PremiumSchedule premiumSchedule;
+
 }
