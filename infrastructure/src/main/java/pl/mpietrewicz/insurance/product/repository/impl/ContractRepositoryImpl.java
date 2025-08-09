@@ -18,7 +18,7 @@ public class ContractRepositoryImpl extends GenericJpaRepository<Contract, Contr
     private final ContractJpaRepository contractJpaRepository;
 
     @Override
-    public List<Contract> getAllContractsFor(InsuredId insuredId) {
+    public List<Contract> findBy(InsuredId insuredId) {
         return contractJpaRepository.findByInsuredId(insuredId);
     }
 

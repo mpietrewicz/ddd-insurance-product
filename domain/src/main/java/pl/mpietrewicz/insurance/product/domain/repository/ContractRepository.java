@@ -15,6 +15,6 @@ public interface ContractRepository {
 
     void save(Contract contract);
 
-    List<Contract> getAllContractsFor(InsuredId insuredId);
+    List<Contract> findBy(InsuredId insuredId);
 
 }

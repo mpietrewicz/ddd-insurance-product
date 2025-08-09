@@ -60,7 +60,7 @@ public class OfferServiceImpl implements OfferService {
         AccountingDate accountingDate = accountingRepository.getAccountingDate();
         List<Product> allProducts = productRepository.loadAll();
         InsuredId insuredId = new InsuredId(applicantData.getApplicantId());
-        List<Contract> insuredContracts = contractRepository.getAllContractsFor(insuredId);
+        List<Contract> insuredContracts = contractRepository.findBy(insuredId);
 
         return offerCreationService.canCreateOffer(applicantData, allProducts, insuredContracts, accountingDate);
     }
@@ -70,7 +70,7 @@ public class OfferServiceImpl implements OfferService {
         AccountingDate accountingDate = accountingRepository.getAccountingDate();
         List<Product> allProducts = productRepository.loadAll();
         InsuredId insuredId = new InsuredId(applicantData.getApplicantId());
-        List<Contract> insuredContracts = contractRepository.getAllContractsFor(insuredId);
+        List<Contract> insuredContracts = contractRepository.findBy(insuredId);
 
         Applicant applicant = applicantFactory.create(applicantData);
         applicantRepository.save(applicant);

@@ -46,7 +46,7 @@ public class OfferingServiceImpl implements OfferingService {
         Offer offer = getOffer(offerId);
         ApplicantId applicantId = offer.getApplicantId();
         InsuredId insuredId = new InsuredId(applicantId);
-        List<Contract> allContracts = contractRepository.getAllContractsFor(insuredId);
+        List<Contract> allContracts = contractRepository.findBy(insuredId);
         List<Product> allProducts = productRepository.loadAll();
         ApplicantData applicantData = applicantDataProvider.get(applicantId);
 
@@ -60,7 +60,7 @@ public class OfferingServiceImpl implements OfferingService {
         ApplicantId applicantId = offer.getApplicantId();
         InsuredId insuredId = new InsuredId(applicantId);
 
-        List<Contract> allContracts = contractRepository.getAllContractsFor(insuredId);
+        List<Contract> allContracts = contractRepository.findBy(insuredId);
         List<Product> allProducts = productRepository.loadAll();
         ApplicantData applicantData = applicantDataProvider.get(applicantId);
         OfferingContext offeringContext = offeringContextFactory.create(offer, product, promotionType);
