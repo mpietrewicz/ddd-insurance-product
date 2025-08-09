@@ -17,7 +17,6 @@ import pl.mpietrewicz.insurance.product.domain.repository.OfferRepository;
 import pl.mpietrewicz.insurance.product.domain.repository.ProductRepository;
 import pl.mpietrewicz.insurance.product.domain.service.aplicant.ApplicantDataProvider;
 import pl.mpietrewicz.insurance.product.domain.service.offer.OfferingAvailabilityService;
-import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingContextFactory;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
@@ -38,8 +37,6 @@ public class OfferingServiceImpl implements OfferingService {
     private final ContractRepository contractRepository;
 
     private final ApplicantDataProvider applicantDataProvider;
-
-    private final OfferingContextFactory offeringContextFactory;
 
     @Override
     public List<AvailableOffering> getAvailableOfferings(OfferId offerId) {
@@ -63,7 +60,7 @@ public class OfferingServiceImpl implements OfferingService {
         List<Contract> allContracts = contractRepository.findBy(insuredId);
         List<Product> allProducts = productRepository.loadAll();
         ApplicantData applicantData = applicantDataProvider.get(applicantId);
-        OfferingContext offeringContext = offeringContextFactory.create(offer, product, promotionType);
+        OfferingContext offeringContext = new OfferingContext(offer, product);
 
         return offeringAvailabilityService.addOffering(offeringContext, applicantData, allContracts, allProducts);
     }

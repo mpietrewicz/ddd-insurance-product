@@ -16,18 +16,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AvailableOfferingConverterImpl implements AvailableOfferingConverter {
 
-    private final MonthlyPremiumConverter monthlyPremiumConverter;
-
     @Override
     public AvailableOfferingModel convert(AvailableOffering availableOffering) {
-        PremiumSchedule premiumSchedule = availableOffering.getPremiumSchedule();
-
         return AvailableOfferingModel.builder()
                 .productId(availableOffering.getProductId())
-                .availablePromotions(availableOffering.getAvailablePromotions())
-                .premiumSchedule(PremiumScheduleModel.builder()
-                        .monthlyPremiums(monthlyPremiumConverter.convert(premiumSchedule.getMonthlyPremiums()))
-                        .build())
+                .premium(availableOffering.getPremium())
                 .build();
     }
 

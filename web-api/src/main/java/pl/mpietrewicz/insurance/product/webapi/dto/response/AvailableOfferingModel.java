@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
-import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
-
-import java.util.List;
+import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
 
 @Getter
 @Builder
@@ -17,11 +15,7 @@ public class AvailableOfferingModel extends RepresentationModel<AvailableOfferin
     @Schema(description = "The ID of the product associated with this offering.")
     private ProductId productId;
 
-    @Schema(description = "List of available promotion types for the offering",
-            example = "[NO_PROMOTION, SINGLE_PROMOTION]")
-    private List<PromotionType> availablePromotions;
-
-    @Schema(description = "Schedule of premium")
-    private PremiumScheduleModel premiumSchedule;
+    @Schema(description = "Premium amount for the offered product", example = "10.50")
+    private Premium premium;
 
 }
