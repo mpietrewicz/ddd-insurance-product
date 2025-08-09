@@ -21,6 +21,7 @@ import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 import static pl.mpietrewicz.insurance.product.commonutil.DateComparison.isAfterOrEqual;
@@ -82,7 +83,15 @@ public class Product extends BaseAggregateRoot<ProductId> {
                 && (validTo == null || isBeforeOrEqual(date, validTo));
     }
 
-    public List<PromotionType> getPromotionTypes() {
+    public List<PromotionType> getAvailablePromotionTypes(List<PromotionType> usedPromotionTypes) {
+        if (usedPromotionTypes.size() > 1) {
+            return Collections.emptyList();
+        } else {
+            return promotionTypes;
+        }
+    }
+
+    public List<PromotionType> getAvailablePromotionTypes() {
         return promotionTypes;
     }
 
