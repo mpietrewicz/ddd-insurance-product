@@ -16,8 +16,7 @@ import pl.mpietrewicz.insurance.product.domain.repository.ContractRepository;
 import pl.mpietrewicz.insurance.product.domain.repository.OfferRepository;
 import pl.mpietrewicz.insurance.product.domain.repository.ProductRepository;
 import pl.mpietrewicz.insurance.product.domain.service.aplicant.ApplicantDataProvider;
-import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingAvailabilityService;
-import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
+import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
@@ -26,9 +25,9 @@ import java.util.List;
 
 @ApplicationService
 @RequiredArgsConstructor
-public class OfferingServiceImpl implements OfferingService {
+public class OfferingServiceImpl implements pl.mpietrewicz.insurance.product.domainapi.OfferingService {
 
-    private final OfferingAvailabilityService offeringAvailabilityService;
+    private final OfferingService offeringService;
 
     private final ProductRepository productRepository;
 
@@ -47,7 +46,7 @@ public class OfferingServiceImpl implements OfferingService {
         List<Product> allProducts = productRepository.loadAll();
         ApplicantData applicantData = applicantDataProvider.get(applicantId);
 
-        return offeringAvailabilityService.getAvailableOfferings(applicantData, allProducts, allContracts, offer);
+        return offeringService.getAvailableOfferings(applicantData, allProducts, allContracts, offer);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class OfferingServiceImpl implements OfferingService {
         ApplicantData applicantData = applicantDataProvider.get(applicantId);
         OfferingContext offeringContext = new OfferingContext(offer, product);
 
-        return offeringAvailabilityService.addOffering(offeringContext, applicantData, allContracts, allProducts);
+        return offeringService.addOffering(offeringContext, applicantData, allContracts, allProducts);
     }
 
     @Override

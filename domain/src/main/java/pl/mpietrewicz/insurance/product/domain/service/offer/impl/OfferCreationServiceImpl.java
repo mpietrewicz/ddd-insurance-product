@@ -1,4 +1,4 @@
-package pl.mpietrewicz.insurance.product.domain.service.offering.impl;
+package pl.mpietrewicz.insurance.product.domain.service.offer.impl;
 
 import lombok.RequiredArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.DomainService;

@@ -1,4 +1,4 @@
-package pl.mpietrewicz.insurance.product.domain.service.offer.impl;
+package pl.mpietrewicz.insurance.product.domain.service.offering.impl;
 
 import lombok.RequiredArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.DomainService;
@@ -8,7 +8,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
 import pl.mpietrewicz.insurance.product.domain.dto.OfferingContext;
-import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingAvailabilityService;
+import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingService;
 import pl.mpietrewicz.insurance.product.domain.service.offer.factory.AvailableOfferingFactory;
 import pl.mpietrewicz.insurance.product.domain.service.product.ProductAvailabilityService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
@@ -19,7 +19,7 @@ import java.util.List;
 
 @DomainService
 @RequiredArgsConstructor
-public class OfferingAvailabilityServiceImpl implements OfferingAvailabilityService {
+public class OfferingServiceImpl implements OfferingService {
 
     private final ProductAvailabilityService productAvailabilityService;
 
@@ -34,8 +34,8 @@ public class OfferingAvailabilityServiceImpl implements OfferingAvailabilityServ
     }
 
     @Override
-    public Long addOffering(OfferingContext offeringContext, ApplicantData applicantData, List<Contract> allContracts,
-                            List<Product> allProducts) {
+    public Long addOffering(OfferingContext offeringContext, ApplicantData applicantData,
+                            List<Contract> allContracts, List<Product> allProducts) {
         Offer offer = offeringContext.getOffer();
 
         if (isProductAvailable(offeringContext, applicantData, allContracts, allProducts)) {
