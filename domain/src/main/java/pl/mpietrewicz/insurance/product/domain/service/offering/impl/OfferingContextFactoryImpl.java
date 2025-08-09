@@ -14,7 +14,7 @@ public class OfferingContextFactoryImpl implements OfferingContextFactory {
     @Override
     public OfferingContext create(Offer offer, Product product, PromotionType promotionType) {
         Premium premium = product.getPremium();
-        return new OfferingContext(product.getProductId(), premium, promotionType, offer);
+        return new OfferingContext(product.getProductId(), premium, promotionType, product, offer);
     }
 
 }

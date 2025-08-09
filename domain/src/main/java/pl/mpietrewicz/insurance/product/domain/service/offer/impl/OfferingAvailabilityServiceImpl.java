@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.DomainService;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
-import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
-import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
@@ -15,8 +13,8 @@ import pl.mpietrewicz.insurance.product.domain.service.offer.factory.AvailableOf
 import pl.mpietrewicz.insurance.product.domain.service.product.ProductAvailabilityService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @DomainService
@@ -30,12 +28,8 @@ public class OfferingAvailabilityServiceImpl implements OfferingAvailabilityServ
     @Override
     public List<AvailableOffering> getAvailableOfferings(ApplicantData applicantData, List<Product> allProducts,
                                                          List<Contract> allContracts, Offer offer) {
-        List<Product> availableProducts = productAvailabilityService.getAvailableProductsFor(offer, applicantData,
-                allProducts);
-        LocalDate offerStartDate = offer.getStartDate();
-
-        return availableProducts.stream()
-                .map(product -> availableOfferingFactory.create(product, allContracts, offerStartDate))
+        return productAvailabilityService.getAvailableProductsFor(offer, applicantData,allProducts).stream()
+                .map(availableOfferingFactory::create)
                 .toList();
     }
 
@@ -45,10 +39,10 @@ public class OfferingAvailabilityServiceImpl implements OfferingAvailabilityServ
         Offer offer = offeringContext.getOffer();
 
         if (isProductAvailable(offeringContext, applicantData, allContracts, allProducts)) {
-            ProductId productId = offeringContext.getProductId();
-            Premium premium = offeringContext.getPremium();
-            PromotionType promotionType = offeringContext.getPromotionType();
-            return offer.addOffering(productId, premium, promotionType);
+            Product product = offeringContext.getProduct();
+            ProductId productId = product.getProductId();
+            Premium premium = product.getPremium();
+            return offer.addOffering(productId, premium);
         } else {
             throw new ProductNotAvailableException(offer.getOfferId());
         }
@@ -57,13 +51,12 @@ public class OfferingAvailabilityServiceImpl implements OfferingAvailabilityServ
     private boolean isProductAvailable(OfferingContext offeringContext, ApplicantData applicantData,
                                        List<Contract> allContracts, List<Product> allProducts) {
         Offer offer = offeringContext.getOffer();
-        ProductId productId = offeringContext.getProductId();
-        PromotionType promotionType = offeringContext.getPromotionType();
+        Product product = offeringContext.getProduct();
+        ProductId productId = product.getProductId();
 
         List<AvailableOffering> availableOfferings = getAvailableOfferings(applicantData, allProducts, allContracts, offer);
         return availableOfferings.stream()
-                .filter(offering -> offering.getProductId().equals(productId))
-                .anyMatch(offering -> offering.getAvailablePromotions().contains(promotionType));
+                .anyMatch(offering -> offering.getProductId().equals(productId));
     }
 
 }

@@ -29,10 +29,9 @@ public class Offering extends BaseEntity {
     @AttributeOverride(name = "amount", column = @Column(name = "premium", nullable = false))
     private Premium premium;
 
-    public Offering(ProductId productId, Premium premium, PromotionType promotionType) {
+    public Offering(ProductId productId, Premium premium) {
         this.productId = productId;
         this.premium = premium;
-        this.promotionType = promotionType;
     }
 
     public boolean apply(Long offeringId) {
