@@ -10,7 +10,7 @@ import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableE
 
 import java.util.List;
 
-public interface OfferingService {
+public interface OfferingApplicationService {
 
     /**
      * Retrieves a list of available offerings for the specified offer.

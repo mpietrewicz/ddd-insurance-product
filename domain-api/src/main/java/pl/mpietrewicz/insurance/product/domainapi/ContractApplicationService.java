@@ -5,7 +5,7 @@ import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ContractNotFoundExcep
 
 import java.time.LocalDate;
 
-public interface ContractService {
+public interface ContractApplicationService {
 
     /**
      * Checks whether the contract can be closed.

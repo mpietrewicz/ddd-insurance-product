@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.OfferService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotChangeStartDateException;
 
 import java.time.LocalDate;
@@ -32,7 +32,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "Offer actions", description = "Operations for managing offer acceptance and start date modifications")
 public class OfferStartController {
 
-    private final OfferService offerService;
+    private final OfferApplicationService offerApplicationService;
 
     @Operation(summary = "Get possibility of changing offer start date",
             description = "Returns available actions for changing the offer start date. " +
@@ -44,7 +44,7 @@ public class OfferStartController {
     @GetMapping
     public RepresentationModel<?> canChangeStartDate(@PathVariable OfferId offerId) {
         RepresentationModel<?> model = new RepresentationModel<>();
-        List<LocalDate> availableStartDates = offerService.getAvailableStartDates(offerId);
+        List<LocalDate> availableStartDates = offerApplicationService.getAvailableStartDates(offerId);
 
         for (LocalDate startDate : availableStartDates) {
             model.add(getLinkToChangeStartDate(offerId, startDate));
@@ -64,7 +64,7 @@ public class OfferStartController {
     @PatchMapping
     public ResponseEntity<RepresentationModel<?>> changeStartDate(@PathVariable OfferId offerId,
                                                                   @RequestParam LocalDate startDate) {
-        offerService.changeStartDate(offerId, startDate);
+        offerApplicationService.changeStartDate(offerId, startDate);
 
         return ResponseEntity.ok()
                 .body(new RepresentationModel<>());

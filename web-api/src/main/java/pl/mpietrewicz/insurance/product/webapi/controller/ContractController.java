@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,8 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ContractId;
-import pl.mpietrewicz.insurance.product.domainapi.ContractService;
-import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ContractNotFoundException;
+import pl.mpietrewicz.insurance.product.domainapi.ContractApplicationService;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.ContractModel;
 import pl.mpietrewicz.insurance.product.webapi.service.model.ContractModelService;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.TerminateContractRequest;
@@ -38,7 +36,7 @@ public class ContractController {
 
     private final ContractModelService contractModelService;
 
-    private final ContractService contractService;
+    private final ContractApplicationService contractApplicationService;
 
     @Operation(summary = "Get a contract by ID",
             description = "Retrieves details of a specific contract by its unique ID. "
@@ -53,7 +51,7 @@ public class ContractController {
     public ContractModel getContract(@PathVariable ContractId contractId) {
         ContractModel contractModel = contractModelService.getById(contractId);
 
-        if (contractService.canTerminateContract(contractId)) {
+        if (contractApplicationService.canTerminateContract(contractId)) {
             contractModel.add(getLinkToTerminateContract(contractId));
         }
         return contractModel;
@@ -69,7 +67,7 @@ public class ContractController {
     public ResponseEntity<RepresentationModel<?>> terminateContract(@PathVariable ContractId contractId,
                                             @Valid @RequestBody TerminateContractRequest terminateContractRequest) {
         LocalDate terminationDate = terminateContractRequest.getTerminationDate();
-        contractService.terminateContract(contractId, terminationDate);
+        contractApplicationService.terminateContract(contractId, terminationDate);
 
         return ResponseEntity.ok()
                 .body(new RepresentationModel<>());

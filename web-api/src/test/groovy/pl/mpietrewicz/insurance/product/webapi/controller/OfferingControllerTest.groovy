@@ -5,7 +5,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId
-import pl.mpietrewicz.insurance.product.domainapi.OfferService
+import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferServiceAdapter
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferingServiceAdapter
 import pl.mpietrewicz.insurance.product.webapi.dto.request.InsuredEligibilityRequest
@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class OfferingControllerTest extends Specification {
 
-    def offerApiService = Mock(OfferService)
+    def offerApiService = Mock(OfferApplicationService)
 
     def offeringModelProvider = Mock(OfferingModelService)
 

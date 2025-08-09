@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ApplicantId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.OfferService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.OfferModel;
 import pl.mpietrewicz.insurance.product.webapi.service.model.OfferModelService;
 
@@ -30,7 +30,7 @@ import static pl.mpietrewicz.insurance.product.webapi.controller.OfferingControl
 @Tag(name = "Offers", description = "Managing offers")
 public class OfferController {
 
-    private final OfferService offerService;
+    private final OfferApplicationService offerApplicationService;
 
     private final OfferModelService offerModelService;
 
@@ -60,7 +60,7 @@ public class OfferController {
     public ResponseEntity<RepresentationModel<?>> deleteOffer(@PathVariable OfferId offerId) {
         OfferModel offerModel = offerModelService.getBy(offerId);
         ApplicantId applicantId = offerModel.getApplicantId();
-        offerService.deleteOffer(offerId);
+        offerApplicationService.deleteOffer(offerId);
 
         RepresentationModel<?> model = new RepresentationModel<>();
         model.add(getLinkToGetOffers(applicantId).withRel("other-offers"));

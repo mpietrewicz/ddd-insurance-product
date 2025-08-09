@@ -9,9 +9,9 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ApplicantId
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
-import pl.mpietrewicz.insurance.product.domainapi.OfferService;
-import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
-import pl.mpietrewicz.insurance.product.domainapi.ProductService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
+import pl.mpietrewicz.insurance.product.domainapi.ProductApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.InsuredRequirements;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.ProductData;
@@ -31,11 +31,11 @@ import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionTy
 @Slf4j
 public class DevelopmentDataInitializer implements CommandLineRunner {
 
-    private final ProductService productService;
+    private final ProductApplicationService productApplicationService;
 
-    private final OfferingService offeringService;
+    private final OfferingApplicationService offeringApplicationService;
 
-    private final OfferService offerService;
+    private final OfferApplicationService offerApplicationService;
 
     @Override
     public void run(String... args) throws Exception {
@@ -44,33 +44,33 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
         log.info("Setting products...");
         ProductData productNw = preapareProductData("Product NW", "12.5",
                 "2025-01-01", "2029-12-31", 70, false);
-        ProductId productNwId = productService.createProduct(productNw);
+        ProductId productNwId = productApplicationService.createProduct(productNw);
 
         ProductData productTu = preapareProductData("Product TU", "9",
                 "2020-01-01", "2025-12-31", 80, true);
-        ProductId productTuId = productService.createProduct(productTu);
+        ProductId productTuId = productApplicationService.createProduct(productTu);
 
         ProductData productAu = preapareProductData("Product AU", "13.75",
                 "1999-01-01", "2025-10-31", 99, false);
-        ProductId productAuId = productService.createProduct(productAu);
+        ProductId productAuId = productApplicationService.createProduct(productAu);
 
         ProductData productHl = preapareProductData("Product HEALTH", "25",
                 "2025-07-01", "2027-12-31", 65, true);
-        ProductId productHlId = productService.createProduct(productHl);
+        ProductId productHlId = productApplicationService.createProduct(productHl);
 
         log.info("Setting offers...");
         ApplicantData driverApplicant = prepareApplicantData("driver", "1978-08-20", false, "driver");
-        OfferId offerId = offerService.createOffer(driverApplicant, LocalDate.parse("2025-09-01"));
+        OfferId offerId = offerApplicationService.createOffer(driverApplicant, LocalDate.parse("2025-09-01"));
 
         ApplicantData nurseApplicant = prepareApplicantData("nurse", "1986-03-06", false, "nurse");
-        offerService.createOffer(nurseApplicant, LocalDate.parse("2025-07-01"));
+        offerApplicationService.createOffer(nurseApplicant, LocalDate.parse("2025-07-01"));
 
         ApplicantData analystApplicant = prepareApplicantData("analyst", "1969-09-01", true, "analyst");
-        offerService.createOffer(analystApplicant, LocalDate.parse("2025-06-01"));
+        offerApplicationService.createOffer(analystApplicant, LocalDate.parse("2025-06-01"));
 
-        offeringService.addOffering(offerId, productNwId, SINGLE_PROMOTION);
-        offeringService.addOffering(offerId, productTuId, DOUBLE_PROMOTION);
-        offeringService.addOffering(offerId, productAuId, PROMOTION_AFTER_TWO_YEARS);
+        offeringApplicationService.addOffering(offerId, productNwId, SINGLE_PROMOTION);
+        offeringApplicationService.addOffering(offerId, productTuId, DOUBLE_PROMOTION);
+        offeringApplicationService.addOffering(offerId, productAuId, PROMOTION_AFTER_TWO_YEARS);
 
 //        offerService.acceptOffer(offerId);
 

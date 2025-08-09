@@ -5,7 +5,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
-import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferingServiceAdapter;
@@ -22,13 +22,13 @@ public class OfferingServiceAdapterImpl implements OfferingServiceAdapter {
 
     private final ApplicantDataConverter applicantDataConverter;
 
-    private final OfferingService offeringService;
+    private final OfferingApplicationService offeringApplicationService;
 
     private final AvailableOfferingConverter availableOfferingConverter;
 
     @Override
     public CollectionModel<AvailableOfferingModel> getAvailableOfferings(OfferId offerId) {
-        List<AvailableOffering> availableOfferings = offeringService.getAvailableOfferings(offerId);
+        List<AvailableOffering> availableOfferings = offeringApplicationService.getAvailableOfferings(offerId);
         return availableOfferingConverter.convert(availableOfferings);
     }
 
@@ -37,7 +37,7 @@ public class OfferingServiceAdapterImpl implements OfferingServiceAdapter {
         ProductId productId = addOfferingRequest.getProductId();
         PromotionType promotionType = addOfferingRequest.getPromotionType();
 
-        return offeringService.addOffering(offerId, productId, promotionType);
+        return offeringApplicationService.addOffering(offerId, productId, promotionType);
     }
 
 }

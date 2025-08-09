@@ -6,12 +6,12 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.ProductFactory;
 import pl.mpietrewicz.insurance.product.domain.repository.ProductRepository;
-import pl.mpietrewicz.insurance.product.domainapi.ProductService;
+import pl.mpietrewicz.insurance.product.domainapi.ProductApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.ProductData;
 
 @ApplicationService
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService {
+public class ProductApplicationServiceImpl implements ProductApplicationService {
 
     private final ProductFactory productFactory;
 

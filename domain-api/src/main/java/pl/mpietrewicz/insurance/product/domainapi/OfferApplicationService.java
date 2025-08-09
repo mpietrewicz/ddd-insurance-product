@@ -10,7 +10,7 @@ import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface OfferService {
+public interface OfferApplicationService {
 
     /**
      * Checks whether an insurance offer can be created based on the provided data.

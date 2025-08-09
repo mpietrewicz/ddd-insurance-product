@@ -23,7 +23,7 @@ import pl.mpietrewicz.insurance.product.domain.service.offer.OfferAcceptanceServ
 import pl.mpietrewicz.insurance.product.domain.service.offer.OfferCreationService;
 import pl.mpietrewicz.insurance.product.domain.service.offer.OfferStartDateService;
 import pl.mpietrewicz.insurance.product.domain.snapshot.Applicant;
-import pl.mpietrewicz.insurance.product.domainapi.OfferService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 
 import java.time.LocalDate;
@@ -31,7 +31,7 @@ import java.util.List;
 
 @ApplicationService
 @RequiredArgsConstructor
-public class OfferServiceImpl implements OfferService {
+public class OfferApplicationServiceImpl implements OfferApplicationService {
 
     private final OfferAcceptanceService offerAcceptanceService;
 

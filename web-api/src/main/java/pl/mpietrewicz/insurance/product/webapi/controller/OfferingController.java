@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.AddOfferingRequest;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.AvailableOfferingModel;
@@ -38,7 +38,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "Offerings", description = "Managing offerings for a specific offer")
 public class OfferingController {
 
-    private final OfferingService offeringService;
+    private final OfferingApplicationService offeringApplicationService;
 
     private final OfferingModelService offeringModelService;
 
@@ -113,7 +113,7 @@ public class OfferingController {
     @DeleteMapping("/{offeringId}")
     public ResponseEntity<RepresentationModel<?>> deleteOffering(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId) {
-        offeringService.removeOffering(offerId, offeringId);
+        offeringApplicationService.removeOffering(offerId, offeringId);
 
         RepresentationModel<?> model = new RepresentationModel<>();
         model.add(getLinkToGetOfferings(offerId).withRel("other-offerings"));

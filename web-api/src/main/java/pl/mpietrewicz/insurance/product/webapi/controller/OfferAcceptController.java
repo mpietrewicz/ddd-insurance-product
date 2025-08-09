@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ContractId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.OfferService;
+import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.CanAcceptOfferModel;
 
@@ -28,7 +28,7 @@ import static pl.mpietrewicz.insurance.product.webapi.controller.ContractControl
 @Tag(name = "Offer actions", description = "Operations for managing offer acceptance and start date modifications")
 public class OfferAcceptController {
 
-    private final OfferService offerService;
+    private final OfferApplicationService offerApplicationService;
 
     @Operation(summary = "Can accept offer",
             description = "Returns true if the offer can be accepted, false otherwise.")
@@ -38,7 +38,7 @@ public class OfferAcceptController {
     })
     @GetMapping
     public CanAcceptOfferModel canAcceptOffer(@PathVariable OfferId offerId) {
-        boolean canAcceptOffer = offerService.canAcceptOffer(offerId);
+        boolean canAcceptOffer = offerApplicationService.canAcceptOffer(offerId);
 
         return CanAcceptOfferModel.builder()
                 .canAccept(canAcceptOffer)
@@ -54,7 +54,7 @@ public class OfferAcceptController {
     })
     @PostMapping
     public ResponseEntity<RepresentationModel<?>> acceptOffer(@PathVariable OfferId offerId) {
-        ContractId contractId = offerService.acceptOffer(offerId);
+        ContractId contractId = offerApplicationService.acceptOffer(offerId);
 
         RepresentationModel<?> model = new RepresentationModel<>();
         model.add(getLinkToGetContract(contractId).withRel("created-contract"));

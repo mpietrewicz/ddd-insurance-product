@@ -5,14 +5,14 @@ import pl.mpietrewicz.insurance.ddd.annotations.application.ApplicationService;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ContractId;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.repository.ContractRepository;
-import pl.mpietrewicz.insurance.product.domainapi.ContractService;
+import pl.mpietrewicz.insurance.product.domainapi.ContractApplicationService;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ContractNotFoundException;
 
 import java.time.LocalDate;
 
 @ApplicationService
 @RequiredArgsConstructor
-public class ContractServiceImpl implements ContractService {
+public class ContractApplicationServiceImpl implements ContractApplicationService {
 
     private final ContractRepository contractRepository;
 
