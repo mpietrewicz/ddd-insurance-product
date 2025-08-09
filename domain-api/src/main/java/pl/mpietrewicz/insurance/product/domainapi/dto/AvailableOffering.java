@@ -4,9 +4,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
-import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
-
-import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
