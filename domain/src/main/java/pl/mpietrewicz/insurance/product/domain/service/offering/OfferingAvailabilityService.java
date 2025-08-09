@@ -1,4 +1,4 @@
-package pl.mpietrewicz.insurance.product.domain.service.offer;
+package pl.mpietrewicz.insurance.product.domain.service.offering;
 
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;

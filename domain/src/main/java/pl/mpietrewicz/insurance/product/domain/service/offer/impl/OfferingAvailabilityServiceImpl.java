@@ -8,7 +8,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
 import pl.mpietrewicz.insurance.product.domain.dto.OfferingContext;
-import pl.mpietrewicz.insurance.product.domain.service.offer.OfferingAvailabilityService;
+import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingAvailabilityService;
 import pl.mpietrewicz.insurance.product.domain.service.offer.factory.AvailableOfferingFactory;
 import pl.mpietrewicz.insurance.product.domain.service.product.ProductAvailabilityService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;

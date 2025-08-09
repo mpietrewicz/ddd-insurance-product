@@ -16,7 +16,7 @@ import pl.mpietrewicz.insurance.product.domain.repository.ContractRepository;
 import pl.mpietrewicz.insurance.product.domain.repository.OfferRepository;
 import pl.mpietrewicz.insurance.product.domain.repository.ProductRepository;
 import pl.mpietrewicz.insurance.product.domain.service.aplicant.ApplicantDataProvider;
-import pl.mpietrewicz.insurance.product.domain.service.offer.OfferingAvailabilityService;
+import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingAvailabilityService;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
