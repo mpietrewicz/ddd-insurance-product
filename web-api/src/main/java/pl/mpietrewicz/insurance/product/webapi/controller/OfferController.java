@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.OfferModel;
 import pl.mpietrewicz.insurance.product.webapi.service.model.OfferModelService;
 
@@ -41,8 +42,11 @@ public class OfferController {
     @GetMapping("/{offerId}")
     public OfferModel getOffer(@PathVariable OfferId offerId) {
         OfferModel offerModel = offerModelService.getBy(offerId);
-        offerModel.getOfferings().getContent().forEach(offering ->
-                offering.add(getLinkToGetOffering(offerId, offering.getId())));
+
+        offerModel.getOfferings().getContent().forEach(offering -> {
+            OfferingKey offeringKey = OfferingKey.of(offerId, offering.getId());
+            offering.add(getLinkToGetOffering(offeringKey));
+        });
 
         offerModel.add(OfferingController.getLinkToGetAvailableOfferings(offerId));
         return offerModel;

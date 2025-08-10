@@ -19,20 +19,17 @@ public class OfferingKey implements Serializable {
     private final OfferId offerId;
 
     @NonNull
-    private final Long offeringId;
+    private final OfferingId offeringId;
 
     @JsonCreator
-    private OfferingKey(
-            @JsonProperty("offerId") OfferId offerId,
-            @JsonProperty("offeringId") Long offeringId
-    ) {
+    private OfferingKey(@JsonProperty("offerId") OfferId offerId, @JsonProperty("offeringId") OfferingId offeringId) {
         if (offerId == null) throw new IllegalArgumentException("offerId cannot be null");
-        if (offeringId == null || offeringId <= 0) throw new IllegalArgumentException("offeringId must be > 0");
+        if (offeringId == null || offeringId.getId() <= 0) throw new IllegalArgumentException("offeringId must be > 0");
         this.offerId = offerId;
         this.offeringId = offeringId;
     }
 
-    public static OfferingKey of(OfferId offerId, Long offeringId) {
+    public static OfferingKey of(OfferId offerId, OfferingId offeringId) {
         return new OfferingKey(offerId, offeringId);
     }
 

@@ -8,11 +8,12 @@ import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
 import pl.mpietrewicz.insurance.product.domain.dto.OfferingContext;
-import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingService;
 import pl.mpietrewicz.insurance.product.domain.service.offer.factory.AvailableOfferingFactory;
+import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingService;
 import pl.mpietrewicz.insurance.product.domain.service.product.ProductAvailabilityService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 
 import java.util.List;
@@ -34,8 +35,8 @@ public class OfferingServiceImpl implements OfferingService {
     }
 
     @Override
-    public Long addOffering(OfferingContext offeringContext, ApplicantData applicantData,
-                            List<Contract> allContracts, List<Product> allProducts) {
+    public OfferingKey addOffering(OfferingContext offeringContext, ApplicantData applicantData,
+                                   List<Contract> allContracts, List<Product> allProducts) {
         Offer offer = offeringContext.getOffer();
 
         if (isProductAvailable(offeringContext, applicantData, allContracts, allProducts)) {

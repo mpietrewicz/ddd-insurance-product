@@ -5,6 +5,8 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Component;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.readmodel.model.OfferReadModel;
 import pl.mpietrewicz.insurance.product.readmodel.model.OfferingReadModel;
 import pl.mpietrewicz.insurance.product.readmodel.repository.OfferReadRepository;
@@ -32,17 +34,14 @@ public class OfferingModelServiceImpl implements OfferingModelService {
     }
 
     @Override
-    public OfferingModel getBy(OfferId offerId, Long offeringId) {
-        if (offerId == null) {
-            throw new IllegalArgumentException("offerId cannot be null");
-        } else if (offeringId == null) {
-            throw new IllegalArgumentException("offeringId cannot be null");
-        }
-
+    public OfferingModel getBy(OfferingKey offeringKey) {
+        OfferId offerId = offeringKey.getOfferId();
         OfferReadModel offerReadModel = offerReadRepository.findByAggregateId(offerId)
                 .orElseThrow(() -> new OfferNotFoundException(offerId));
+
+        OfferingId offeringId = offeringKey.getOfferingId();
         OfferingReadModel offeringReadModel = offerReadModel.getOfferings().stream()
-                .filter(offering -> offering.getEntityId().equals(offeringId))
+                .filter(offering -> offering.getId().equals(offeringId))
                 .findAny()
                 .orElseThrow();
 

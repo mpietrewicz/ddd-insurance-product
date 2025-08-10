@@ -35,7 +35,7 @@ public interface OfferingApplicationService {
      * @throws ProductNotFoundException     if the product with the given ID does not exist
      * @throws ProductNotAvailableException if the product is unavailable for the offer due to business rules
      */
-    Long addOffering(OfferId offerId, ProductId productId, PromotionType promotionType);
+    OfferingKey addOffering(OfferId offerId, ProductId productId, PromotionType promotionType);
 
     /**
      * Removes a previously added offering from the specified offer.

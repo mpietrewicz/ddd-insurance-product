@@ -20,6 +20,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedOffer;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domain.service.offer.policy.OfferStartPolicy;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
@@ -71,14 +72,14 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return aggregateId;
     }
 
-    public Long addOffering(ProductId productId, Premium premium) {
+    public OfferingKey addOffering(ProductId productId, Premium premium) {
         Offering offering = new Offering(productId, premium);
         offerings.add(offering);
-        return offering.getEntityId();
+        return OfferingKey.of(this.aggregateId, offering.getId());
     }
 
     public void removeOffering(OfferingKey offeringKey) {
-        Long offeringId = offeringKey.getOfferingId();
+        OfferingId offeringId = offeringKey.getOfferingId();
         offerings.removeIf(offering -> offering.matches(offeringId));
     }
 
@@ -116,7 +117,7 @@ public class Offer extends BaseAggregateRoot<OfferId> {
     }
 
     public List<PromotionType> listRevocablePromotions(OfferingKey offeringKey) {
-        Long offeringId = offeringKey.getOfferingId();
+        OfferingId offeringId = offeringKey.getOfferingId();
         Offering offering = offerings.stream()
                 .filter(o -> o.matches(offeringId))
                 .findAny()
@@ -166,6 +167,15 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return offerings.stream()
                 .allMatch(offering -> productIds.stream()
                         .anyMatch(offering::matches));
+    }
+
+    private Offering getOfferingOrThrow(OfferingId offeringId) {
+        return offerings.stream()
+                .filter(offering -> offering.matches(offeringId))
+                .reduce((a, b) -> {
+                    throw new IllegalStateException("More than one offering found for id: " + offeringId);
+                })
+                .orElseThrow(() -> new IllegalStateException("Offering not found: " + offeringId));
     }
 
     private List<AcceptedProduct> getAcceptedProducts() {

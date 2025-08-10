@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.springframework.hateoas.RepresentationModel;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 @Getter
@@ -14,7 +15,7 @@ import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 public class OfferingModel extends RepresentationModel<OfferingModel> {
 
     @Schema(description = "The unique identifier of the offering.")
-    private Long id;
+    private OfferingId id;
 
     @Schema(description = "The ID of the product associated with this offering.")
     private ProductId productId;

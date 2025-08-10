@@ -5,24 +5,31 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.NoArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
-import pl.mpietrewicz.insurance.ddd.support.infrastructure.repo.BaseEntity;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @NoArgsConstructor
-public class Offering extends BaseEntity {
+public class Offering {
+
+    @EmbeddedId
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @AttributeOverride(name = "aggregateId", column = @Column(name = "productId", nullable = false))
+    private OfferingId id;
 
     @Embedded
     @AttributeOverride(name = "aggregateId", column = @Column(name = "productId", nullable = false))
@@ -40,6 +47,10 @@ public class Offering extends BaseEntity {
     public Offering(ProductId productId, Premium premium) {
         this.productId = productId;
         this.premium = premium;
+    }
+
+    public OfferingId getId() {
+        return id;
     }
 
     public ProductId getProductId() {
@@ -68,8 +79,8 @@ public class Offering extends BaseEntity {
         usedPromotions.remove(promotionType);
     }
 
-    public boolean matches(Long offeringId) {
-        return Objects.equals(this.entityId, offeringId);
+    public boolean matches(OfferingId offeringId) {
+        return this.id.equals(offeringId);
     }
 
     public boolean matches(ProductId productId) {

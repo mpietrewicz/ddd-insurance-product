@@ -16,7 +16,7 @@ public class OfferingModelAssemblerImpl implements OfferingModelAssembler,
     @Override
     public OfferingModel toModel(OfferingReadModel entity) {
         return OfferingModel.builder()
-                .id(entity.getEntityId())
+                .id(entity.getId())
                 .productId(entity.getProductId())
                 .promotion(entity.getPromotionType())
                 .build();

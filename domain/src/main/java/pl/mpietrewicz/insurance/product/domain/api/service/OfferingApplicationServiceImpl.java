@@ -52,7 +52,7 @@ public class OfferingApplicationServiceImpl implements OfferingApplicationServic
     }
 
     @Override
-    public Long addOffering(OfferId offerId, ProductId productId, PromotionType promotionType) {
+    public OfferingKey addOffering(OfferId offerId, ProductId productId, PromotionType promotionType) {
         Offer offer = getOffer(offerId);
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();

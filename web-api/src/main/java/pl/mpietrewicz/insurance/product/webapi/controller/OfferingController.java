@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.AddOfferingRequest;
@@ -55,8 +56,10 @@ public class OfferingController {
     public CollectionModel<OfferingModel> getOfferings(@PathVariable OfferId offerId) {
         CollectionModel<OfferingModel> offeringsModel = offeringModelService.getBy(offerId);
 
-        offeringsModel.forEach(offering ->
-                offering.add(getLinkToGetOffering(offerId, offering.getId())));
+        offeringsModel.forEach(offering -> {
+            OfferingKey offeringKey = OfferingKey.of(offerId, offering.getId());
+            offering.add(getLinkToGetOffering(offeringKey));
+        });
         offeringsModel.add(getLinkToGetAvailableOfferings(offerId));
         return offeringsModel;
     }
@@ -68,10 +71,11 @@ public class OfferingController {
             @ApiResponse(responseCode = "404", description = "Offering not found")
     })
     @GetMapping("/{offeringId}")
-    public OfferingModel getOffering(@PathVariable OfferId offerId, @PathVariable Long offeringId) {
-        OfferingModel offeringModel = offeringModelService.getBy(offerId, offeringId);
+    public OfferingModel getOffering(@PathVariable OfferId offerId, @PathVariable OfferingId offeringId) {
+        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
+        OfferingModel offeringModel = offeringModelService.getBy(offeringKey);
 
-        offeringModel.add(getLinkToDeleteOffering(offerId, offeringId));
+        offeringModel.add(getLinkToDeleteOffering(offeringKey));
         return offeringModel;
     }
 
@@ -99,9 +103,9 @@ public class OfferingController {
     })
     @PostMapping
     public ResponseEntity<RepresentationModel<?>> addOffering(@PathVariable OfferId offerId,
-              @Valid @RequestBody AddOfferingRequest addOfferingRequest) {
-        Long offeringId = offeringServiceAdapter.addOffering(offerId, addOfferingRequest);
-        return ResponseEntity.created(getLinkToGetOffering(offerId, offeringId).toUri())
+                                                              @Valid @RequestBody AddOfferingRequest addOfferingRequest) {
+        OfferingKey offeringKey = offeringServiceAdapter.addOffering(offerId, addOfferingRequest);
+        return ResponseEntity.created(getLinkToGetOffering(offeringKey).toUri())
                 .body(new RepresentationModel<>());
     }
 
@@ -113,7 +117,7 @@ public class OfferingController {
     })
     @DeleteMapping("/{offeringId}")
     public ResponseEntity<RepresentationModel<?>> deleteOffering(@PathVariable OfferId offerId,
-                                                                 @PathVariable Long offeringId) {
+                                                                 @PathVariable OfferingId offeringId) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         offeringApplicationService.removeOffering(offeringKey);
 
@@ -136,7 +140,10 @@ public class OfferingController {
                 .addOffering(offerId, null)).withRel("add-offering");
     }
 
-    public static Link getLinkToGetOffering(OfferId offerId, Long offeringId) {
+    public static Link getLinkToGetOffering(OfferingKey offeringKey) {
+        OfferId offerId = offeringKey.getOfferId();
+        OfferingId offeringId = offeringKey.getOfferingId();
+
         return linkTo(methodOn(OfferingController.class)
                 .getOffering(offerId, offeringId)).withSelfRel();
     }
@@ -146,7 +153,10 @@ public class OfferingController {
                 .getAvailableOfferings(offerId)).withRel("available-offerings");
     }
 
-    public static Link getLinkToDeleteOffering(OfferId offerId, Long offeringId) {
+    public static Link getLinkToDeleteOffering(OfferingKey offeringKey) {
+        OfferId offerId = offeringKey.getOfferId();
+        OfferingId offeringId = offeringKey.getOfferingId();
+
         return linkTo(methodOn(OfferingController.class)
                 .deleteOffering(offerId, offeringId)).withRel("delete-offering");
     }

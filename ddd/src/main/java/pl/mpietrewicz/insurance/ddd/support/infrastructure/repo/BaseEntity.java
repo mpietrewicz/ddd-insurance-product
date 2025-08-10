@@ -15,10 +15,10 @@ public abstract class BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long entityId;
+    protected Long id;
 
-    public Long getEntityId() {
-        return entityId;
+    public Long getId() {
+        return id;
     }
 
 }
