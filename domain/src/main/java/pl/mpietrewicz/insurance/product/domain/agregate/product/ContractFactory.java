@@ -35,10 +35,10 @@ public class ContractFactory {
 
     private Component createComponent(LocalDate startDate, AcceptedProduct acceptedProduct) {
         ProductId productId = acceptedProduct.getProductId();
-        PromotionType promotionType = acceptedProduct.getPromotionType();
+        List<PromotionType> usedPromotions = acceptedProduct.getUsedPromotions();
         Premium premium = acceptedProduct.getPremium();
 
-        return new Component(productId, startDate, premium, promotionType);
+        return new Component(productId, startDate, premium, usedPromotions);
     }
 
 }

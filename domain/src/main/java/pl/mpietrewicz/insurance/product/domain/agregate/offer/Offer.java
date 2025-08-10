@@ -15,7 +15,6 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.AccountingDate;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
 import pl.mpietrewicz.insurance.ddd.support.infrastructure.repo.BaseAggregateRoot;
-import pl.mpietrewicz.insurance.product.domain.agregate.contract.UsedPromotion;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedOffer;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domain.service.offer.policy.OfferStartPolicy;
@@ -160,13 +159,6 @@ public class Offer extends BaseAggregateRoot<OfferId> {
 
     public OfferId getOfferId() {
         return aggregateId;
-    }
-
-    public List<UsedPromotion> getUserPromotions(ProductId productId) {
-        return offerings.stream()
-                .filter(offering -> offering.applyProduct(productId))
-                .map(offering -> offering.)
-
     }
 
 }

@@ -5,12 +5,13 @@ import lombok.RequiredArgsConstructor;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
 public class UsedPromotion {
 
-    private final PromotionType promotionType;
+    private final List<PromotionType> promotionTypes;
 
     private final LocalDate startDate;
 

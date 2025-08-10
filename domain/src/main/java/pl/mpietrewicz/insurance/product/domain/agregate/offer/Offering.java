@@ -25,7 +25,7 @@ public class Offering extends BaseEntity {
     private ProductId productId;
 
     @Enumerated
-    private List<PromotionType> promotionTypes;
+    private List<PromotionType> usedPromotions;
 
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "premium", nullable = false))
@@ -40,15 +40,15 @@ public class Offering extends BaseEntity {
         return true; // todo: popraiwć
     }
 
-    public boolean applyPromotion(PromotionPolicy policy, PromotionType promotionType) {
-        if (this.promotionTypes.contains(promotionType)) {
+    public void applyPromotion(PromotionPolicy policy, PromotionType promotionType) {
+        if (this.usedPromotions.contains(promotionType)) {
             throw new IllegalStateException("Offering already contains promotion of type " + promotionType);  //
             // todo: dać inny wyjątek ?
         }
 
         Premium premiumDiscount = policy.calculateDiscount(this.premium);
         this.premium = this.premium.subtract(premiumDiscount);
-        return this.promotionTypes.add(promotionType);
+        this.usedPromotions.add(promotionType);
     }
 
     public boolean apply(Long offeringId) {
@@ -60,7 +60,7 @@ public class Offering extends BaseEntity {
     }
 
     public AcceptedProduct convertToAcceptedProduct() {
-        return new AcceptedProduct(productId, promotionType, Premium.TEN);
+        return new AcceptedProduct(productId, Premium.TEN, usedPromotions);
     }
 
 }

@@ -12,9 +12,8 @@ import pl.mpietrewicz.insurance.ddd.support.infrastructure.repo.BaseEntity;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
-
-import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.NO_PROMOTION;
 
 @Entity
 @NoArgsConstructor
@@ -32,13 +31,13 @@ public class Component extends BaseEntity {
     private Premium premium;
 
     @Enumerated
-    private PromotionType promotionType;
+    private List<PromotionType> usedPromotions;
 
-    public Component(ProductId productId, LocalDate startDate, Premium premium, PromotionType promotionType) {
+    public Component(ProductId productId, LocalDate startDate, Premium premium, List<PromotionType> usedPromotions) {
         this.productId = productId;
         this.startDate = startDate;
         this.premium = premium;
-        this.promotionType = promotionType;
+        this.usedPromotions = usedPromotions;
     }
 
     public boolean isSameProduct(ProductId productId) {
@@ -51,12 +50,12 @@ public class Component extends BaseEntity {
 
     public Optional<UsedPromotion> getUsedPromotion() {
         return isPromotionUsed()
-                ? Optional.of(new UsedPromotion(startDate, endDate))
+                ? Optional.of(new UsedPromotion(usedPromotions, startDate, endDate))
                 : Optional.empty();
     }
 
     private boolean isPromotionUsed() {
-        return promotionType != NO_PROMOTION && endDate.isAfter(startDate);
+        return !usedPromotions.isEmpty() && endDate.isAfter(startDate);
     }
 
 }
