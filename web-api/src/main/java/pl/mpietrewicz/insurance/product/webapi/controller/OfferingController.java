@@ -108,7 +108,7 @@ public class OfferingController {
     @Operation(summary = "Delete an offering",
             description = "Deletes a specific offering from the offer.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Offering deleted successfully"),
+            @ApiResponse(responseCode = "204", description = "Offering deleted or already not applied"),
             @ApiResponse(responseCode = "404", description = "Offering not found")
     })
     @DeleteMapping("/{offeringId}")
@@ -117,10 +117,7 @@ public class OfferingController {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         offeringApplicationService.removeOffering(offeringKey);
 
-        RepresentationModel<?> model = new RepresentationModel<>();
-        model.add(getLinkToGetOfferings(offerId).withRel("other-offerings"));
-        return ResponseEntity.ok()
-                .body(model);
+        return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(ProductNotAvailableException.class)

@@ -81,7 +81,7 @@ public class PromotionController {
     @Operation(summary = "Revoke a promotion",
             description = "Revokes the selected promotion from the specified offering.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Promotion revoked successfully"),
+            @ApiResponse(responseCode = "204", description = "Promotion revoked or already not applied"),
             @ApiResponse(responseCode = "404", description = "Offering not found")
     })
     @DeleteMapping
@@ -91,8 +91,7 @@ public class PromotionController {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         promotionApplicationService.revokePromotion(promotionType, offeringKey);
 
-        return ResponseEntity.ok()
-                .body(new RepresentationModel<>());
+        return ResponseEntity.noContent().build();
     }
 
     @ExceptionHandler(ProductNotAvailableException.class)
