@@ -23,20 +23,21 @@ public class PromotionServiceImpl implements PromotionService {
     private final Map<PromotionType, PromotionPolicy> promotionPolicyMap;
 
     @Override
-    public List<PromotionType> getAvailablePromotions(Offer offer, Product product, List<Contract> contracts) {
+    public List<PromotionType> getAvailablePromotions(Offer offer, OfferingKey offeringKey, Product product,
+                                                      List<Contract> contracts) {
         List<PromotionType> supportedPromotions = product.getSupportedPromotions();
         List<UsedPromotion> usedPromotions = getUsedPromotions(product, contracts);
         LocalDate offerStart = offer.getStartDate();
 
         return supportedPromotions.stream()
                 .filter(allowedByPolicy(offerStart, usedPromotions))
-                .filter(getAllowedByOffer(offer, product))
+                .filter(getAllowedByOffer(offer, offeringKey))
                 .toList();
     }
 
     @Override
     public void applyPromotion(PromotionType promotionType, Offer offer, OfferingKey offeringKey, Product product, List<Contract> contracts) {
-        List<PromotionType> availablePromotions = getAvailablePromotions(offer, product, contracts);
+        List<PromotionType> availablePromotions = getAvailablePromotions(offer, offeringKey, product, contracts);
         if (availablePromotions.contains(promotionType)) {
             PromotionPolicy promotionPolicy = promotionPolicyMap.get(promotionType);
             offer.applyPromotion(offeringKey, promotionPolicy, promotionType);
@@ -56,9 +57,8 @@ public class PromotionServiceImpl implements PromotionService {
         };
     }
 
-    private Predicate<PromotionType> getAllowedByOffer(Offer offer, Product product) {
-        return type -> offer.canApplyPromotion(type, product.getProductId()); // todo: tutaj powinienem przekazać
-        // offeringId
+    private Predicate<PromotionType> getAllowedByOffer(Offer offer, OfferingKey offeringKey) {
+        return type -> offer.canApplyPromotion(type, offeringKey);
     }
 
 }

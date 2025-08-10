@@ -41,7 +41,7 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
         InsuredId insuredId = new InsuredId(applicantId);
         List<Contract> allContracts = contractRepository.findBy(insuredId);
 
-        return promotionService.getAvailablePromotions(offer, product, allContracts);
+        return promotionService.getAvailablePromotions(offer, offeringKey, product, allContracts);
     }
 
     @Override

@@ -90,10 +90,10 @@ public class Offer extends BaseAggregateRoot<OfferId> {
                 .orElseThrow(); // todo: zwórócić wyjatek że nie można znaleźć offeringu
     }
 
-    public boolean canApplyPromotion(PromotionType promotionType, ProductId productId) {
-        return getOffering(productId)
-                .map(offering -> offering.canApplyPromotion(promotionType))
-                .orElse(false);
+    public boolean canApplyPromotion(PromotionType promotionType, OfferingKey offeringKey) {
+        return offerings.stream()
+                .filter(offering -> offering.matches(offeringKey.getOfferingId()))
+                .allMatch(offering -> offering.canApplyPromotion(promotionType));
     }
 
     public void applyPromotion(OfferingKey offeringKey, PromotionPolicy policy, PromotionType promotionType) {
@@ -166,12 +166,6 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return offerings.stream()
                 .allMatch(offering -> productIds.stream()
                         .anyMatch(offering::matches));
-    }
-
-    private Optional<Offering> getOffering(ProductId productId) {
-        return offerings.stream()
-                .filter(offering -> offering.matches(productId))
-                .findAny();
     }
 
     private List<AcceptedProduct> getAcceptedProducts() {

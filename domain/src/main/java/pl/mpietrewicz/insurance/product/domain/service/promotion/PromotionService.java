@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface PromotionService {
 
-    List<PromotionType> getAvailablePromotions(Offer offer, Product product, List<Contract> contracts);
+    List<PromotionType> getAvailablePromotions(Offer offer, OfferingKey offeringKey, Product product, List<Contract> contracts);
 
     void applyPromotion(PromotionType promotionType, Offer offer, OfferingKey offeringKey, Product product, List<Contract> contracts);
 
