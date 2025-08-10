@@ -51,6 +51,11 @@ public class Offering extends BaseEntity {
         this.usedPromotions.add(promotionType);
     }
 
+    public void removePromotion(PromotionType promotionType) {
+        // todo: remove discount
+        usedPromotions.remove(promotionType);
+    }
+
     public boolean apply(Long offeringId) {
         return Objects.equals(this.entityId, offeringId);
     }

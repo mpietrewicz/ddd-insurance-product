@@ -161,4 +161,11 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return aggregateId;
     }
 
+    public void removePromotion(PromotionType promotionType, ProductId productId) {
+        offerings.stream()
+                .filter(offering -> offering.applyProduct(productId))
+                .findAny()
+                .ifPresent(offering -> offering.removePromotion(promotionType));
+    }
+
 }
