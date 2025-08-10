@@ -46,7 +46,9 @@ public class Offering extends BaseEntity {
         return productId;
     }
 
-    public boolean canAddPromotion(PromotionType promotionType) {
+    public boolean canApplyPromotion(PromotionType promotionType) {
+        // todo: gdy już nie obniża składki to nie ma sensu dodawać tej promocji
+
         return !usedPromotions.contains(promotionType);
     }
 

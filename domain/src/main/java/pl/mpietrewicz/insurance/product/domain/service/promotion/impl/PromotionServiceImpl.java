@@ -26,7 +26,7 @@ public class PromotionServiceImpl implements PromotionService {
     public List<PromotionType> getAvailablePromotions(Offer offer, Product product, List<Contract> contracts) {
         return product.getSupportedPromotions().stream()
                 .filter(canOffer(product, offer, contracts))
-                .filter(promotionType -> offer.canAddPromotion(product.getProductId(), promotionType))
+                .filter(promotionType -> offer.canApplyPromotion(product.getProductId(), promotionType))
                 .toList();
     }
 

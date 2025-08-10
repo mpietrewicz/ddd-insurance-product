@@ -101,9 +101,9 @@ public class Offer extends BaseAggregateRoot<OfferId> {
                         .anyMatch(offering::applyProduct));
     }
 
-    public boolean canAddPromotion(ProductId productId, PromotionType promotionType) {
+    public boolean canApplyPromotion(ProductId productId, PromotionType promotionType) {
         return getOffering(productId)
-                .map(offering -> offering.canAddPromotion(promotionType))
+                .map(offering -> offering.canApplyPromotion(promotionType))
                 .orElse(false);
     }
 
