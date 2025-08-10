@@ -77,7 +77,7 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         Offering offering = new Offering(offeringId, productId, premium);
 
         offerings.add(offering);
-        return OfferingKey.of(this.aggregateId, offering.getId());
+        return OfferingKey.of(this.aggregateId, offeringId);
     }
 
     public void removeOffering(OfferingKey offeringKey) {
@@ -166,9 +166,8 @@ public class Offer extends BaseAggregateRoot<OfferId> {
     }
 
     public boolean contains(List<ProductId> productIds) {
-        return offerings.stream()
-                .allMatch(offering -> productIds.stream()
-                        .anyMatch(offering::matches));
+        return productIds.stream()
+                .allMatch(this::contains);
     }
 
     private Offering getOfferingOrThrow(OfferingId offeringId) {

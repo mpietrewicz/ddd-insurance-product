@@ -28,7 +28,6 @@ public class Offering {
 
     @EmbeddedId
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @AttributeOverride(name = "aggregateId", column = @Column(name = "productId", nullable = false))
     private OfferingId id;
 
     @Embedded
@@ -48,10 +47,6 @@ public class Offering {
         this.id = id;
         this.productId = productId;
         this.premium = premium;
-    }
-
-    public OfferingId getId() {
-        return id;
     }
 
     public ProductId getProductId() {
@@ -80,6 +75,10 @@ public class Offering {
         usedPromotions.remove(promotionType);
     }
 
+    public List<PromotionType> listRevocablePromotions() {
+        return usedPromotions;
+    }
+
     public boolean matches(OfferingId offeringId) {
         return this.id.equals(offeringId);
     }
@@ -90,10 +89,6 @@ public class Offering {
 
     public AcceptedProduct convertToAcceptedProduct() {
         return new AcceptedProduct(productId, Premium.TEN, usedPromotions);
-    }
-
-    public List<PromotionType> listRevocablePromotions() {
-        return usedPromotions;
     }
 
 }
