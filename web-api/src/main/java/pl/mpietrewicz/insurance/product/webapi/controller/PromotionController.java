@@ -33,7 +33,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequestMapping("/offers/{offerId}/offerings/{offeringId}/promotions")
 @RequiredArgsConstructor
-@Tag(name = "Offering promotions", description = "Managing promotions for a specific offerings")
+@Tag(name = "Promotions", description = "Managing promotions for a specific offerings")
 public class PromotionController {
 
     private static final String REL_APPLY_PROMOTION = "apply-promotion";
@@ -45,7 +45,7 @@ public class PromotionController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Available promotions retrieved successfully")
     })
-    @GetMapping("/available")
+    @GetMapping
     public CollectionModel<PromotionType> getAvailablePromotions(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
