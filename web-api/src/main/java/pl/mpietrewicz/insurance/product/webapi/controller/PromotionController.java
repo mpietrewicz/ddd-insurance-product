@@ -34,64 +34,64 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "Offering promotions", description = "Managing promotions for a specific offerings")
 public class PromotionController {
 
+    private static final String REL_ADD_PROMOTION = "add-promotion";
+
     private final PromotionServiceAdapter promotionServiceAdapter;
 
     private final PromotionApplicationService promotionApplicationService;
 
-    @Operation(summary = "Get available offerings for a specific insured",
-            description = "Retrieves a list of available offerings for a specific insured based on eligibility.")
+    @Operation(summary = "Get available promotions for a specific offering",
+            description = "Retrieves a list of available promotions for the specified offering based on promotion policy.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Available offerings retrieved successfully")
+            @ApiResponse(responseCode = "200", description = "Available promotions retrieved successfully")
     })
     @GetMapping("/available")
     public CollectionModel<PromotionType> getAvailablePromotions(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId) {
-        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
+        OfferingKey offeringKey = toOfferingKey(offerId, offeringId);
         CollectionModel<PromotionType> availablePromotions = promotionServiceAdapter.getAvailablePromotions(offeringKey);
 
         if (!availablePromotions.getContent().isEmpty()) {
-            for (PromotionType promotionType : availablePromotions.getContent()) {
-                availablePromotions.add(getLinkToAddPromotion(offerId, offeringId, promotionType));
-            }
+            availablePromotions.getContent()
+                    .forEach(promotionType ->
+                            availablePromotions.add(buildAddPromotionLink(offerId, offeringId, promotionType)));
         }
         return availablePromotions;
     }
 
-    @Operation(summary = "Add a new offering",
-            description = "Adds a new offering to the specified offer.")
+    @Operation(summary = "Apply a promotion",
+            description = "Applies the selected promotion to the specified offering.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Offering added successfully"),
+            @ApiResponse(responseCode = "201", description = "Promotion applied successfully"),
             @ApiResponse(responseCode = "404", description = "Offer or product not found"),
-            @ApiResponse(responseCode = "409", description = "Offering with requested product id cannot be added")
+            @ApiResponse(responseCode = "409", description = "Promotion cannot be applied")
     })
     @PostMapping
     public ResponseEntity<RepresentationModel<?>> applyPromotion(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId,
                                                                  @RequestParam PromotionType promotionType) {
-        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
+        OfferingKey offeringKey = toOfferingKey(offerId, offeringId);
         promotionApplicationService.applyPromotion(promotionType, offeringKey);
 
-        RepresentationModel<?> model = new RepresentationModel<>();
-        return ResponseEntity.ok()
-                .body(model);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new RepresentationModel<>());
     }
 
-    @Operation(summary = "Delete an offering",
-            description = "Deletes a specific offering from the offer.")
+    @Operation(summary = "Revoke a promotion",
+            description = "Revokes the selected promotion from the specified offering.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Offering deleted successfully"),
+            @ApiResponse(responseCode = "200", description = "Promotion revoked successfully"),
             @ApiResponse(responseCode = "404", description = "Offering not found")
     })
     @DeleteMapping
     public ResponseEntity<RepresentationModel<?>> revokePromotion(@PathVariable OfferId offerId,
                                                                   @PathVariable Long offeringId,
                                                                   @RequestParam PromotionType promotionType) {
-        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
+        OfferingKey offeringKey = toOfferingKey(offerId, offeringId);
         promotionApplicationService.revokePromotion(promotionType, offeringKey);
 
-        RepresentationModel<?> model = new RepresentationModel<>();
         return ResponseEntity.ok()
-                .body(model);
+                .body(new RepresentationModel<>());
     }
 
     @ExceptionHandler(ProductNotAvailableException.class)
@@ -99,9 +99,13 @@ public class PromotionController {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    private static Link getLinkToAddPromotion(OfferId offerId, Long offeringId, PromotionType promotionType) {
+    private static OfferingKey toOfferingKey(OfferId offerId, Long offeringId) {
+        return OfferingKey.of(offerId, offeringId);
+    }
+
+    private static Link buildAddPromotionLink(OfferId offerId, Long offeringId, PromotionType promotionType) {
         return linkTo(methodOn(PromotionController.class)
-                .applyPromotion(offerId, offeringId, promotionType)).withRel("add-promotion");
+                .applyPromotion(offerId, offeringId, promotionType)).withRel(REL_ADD_PROMOTION);
     }
 
 }
