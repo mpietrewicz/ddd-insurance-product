@@ -2,8 +2,10 @@ package pl.mpietrewicz.insurance.product.domain.agregate.offer;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.NoArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
@@ -13,6 +15,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduc
 import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,8 +27,9 @@ public class Offering extends BaseEntity {
     @AttributeOverride(name = "aggregateId", column = @Column(name = "productId", nullable = false))
     private ProductId productId;
 
-    @Enumerated
-    private List<PromotionType> usedPromotions;
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
+    private List<PromotionType> usedPromotions = new ArrayList<>();
 
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "premium", nullable = false))
@@ -41,7 +45,7 @@ public class Offering extends BaseEntity {
     }
 
     public boolean canAddPromotion(PromotionType promotionType) {
-        return true; // todo: popraiwć
+        return !usedPromotions.contains(promotionType);
     }
 
     public void applyPromotion(PromotionPolicy policy, PromotionType promotionType) {

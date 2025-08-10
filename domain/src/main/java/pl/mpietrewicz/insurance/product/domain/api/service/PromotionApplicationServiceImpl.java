@@ -1,7 +1,6 @@
 package pl.mpietrewicz.insurance.product.domain.api.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import pl.mpietrewicz.insurance.ddd.annotations.application.ApplicationService;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ApplicantId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.InsuredId;
