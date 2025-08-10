@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.product.domainapi.PromotionApplicationService;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
@@ -47,7 +48,7 @@ public class PromotionController {
     })
     @GetMapping
     public CollectionModel<PromotionType> getAvailablePromotions(@PathVariable OfferId offerId,
-                                                                 @PathVariable Long offeringId) {
+                                                                 @PathVariable OfferingId offeringId) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         List<PromotionType> availablePromotions = promotionApplicationService.getAvailablePromotions(offeringKey);
 
@@ -69,7 +70,7 @@ public class PromotionController {
     })
     @PostMapping
     public ResponseEntity<RepresentationModel<?>> applyPromotion(@PathVariable OfferId offerId,
-                                                                 @PathVariable Long offeringId,
+                                                                 @PathVariable OfferingId offeringId,
                                                                  @RequestParam PromotionType promotionType) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         promotionApplicationService.applyPromotion(promotionType, offeringKey);
@@ -86,7 +87,7 @@ public class PromotionController {
     })
     @DeleteMapping
     public ResponseEntity<RepresentationModel<?>> revokePromotion(@PathVariable OfferId offerId,
-                                                                  @PathVariable Long offeringId,
+                                                                  @PathVariable OfferingId offeringId,
                                                                   @RequestParam PromotionType promotionType) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         promotionApplicationService.revokePromotion(promotionType, offeringKey);
@@ -117,7 +118,7 @@ public class PromotionController {
 
     private static Link buildApplyPromotionLink(OfferingKey offeringKey, PromotionType promotionType) {
         OfferId offerId = offeringKey.getOfferId();
-        Long offeringId = offeringKey.getOfferingId();
+        OfferingId offeringId = offeringKey.getOfferingId();
 
         return linkTo(methodOn(PromotionController.class)
                 .applyPromotion(offerId, offeringId, promotionType))
@@ -126,7 +127,7 @@ public class PromotionController {
 
     private static Link buildRevokePromotionLink(OfferingKey offeringKey, PromotionType promotionType) {
         OfferId offerId = offeringKey.getOfferId();
-        Long offeringId = offeringKey.getOfferingId();
+        OfferingId offeringId = offeringKey.getOfferingId();
 
         return linkTo(methodOn(PromotionController.class)
                 .revokePromotion(offerId, offeringId, promotionType))

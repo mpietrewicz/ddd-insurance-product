@@ -1,5 +1,6 @@
 package pl.mpietrewicz.insurance.product.domainapi.dto.offering;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.Embeddable;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.PublishedLanguage;
 
@@ -18,6 +19,7 @@ public class OfferingId {
         this.id = Objects.requireNonNull(id, "offeringId");
     }
 
+    @JsonValue
     public Long getId() {
         return id;
     }
