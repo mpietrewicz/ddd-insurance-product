@@ -1,4 +1,4 @@
-package pl.mpietrewicz.insurance.product.domainapi.dto;
+package pl.mpietrewicz.insurance.product.domainapi.dto.offering;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

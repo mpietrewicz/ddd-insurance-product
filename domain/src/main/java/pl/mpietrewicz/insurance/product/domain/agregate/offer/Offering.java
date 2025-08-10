@@ -36,6 +36,10 @@ public class Offering extends BaseEntity {
         this.premium = premium;
     }
 
+    public ProductId getProductId() {
+        return productId;
+    }
+
     public boolean canAddPromotion(PromotionType promotionType) {
         return true; // todo: popraiwć
     }

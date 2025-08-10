@@ -4,7 +4,7 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ProductNotFoundException;
-import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 

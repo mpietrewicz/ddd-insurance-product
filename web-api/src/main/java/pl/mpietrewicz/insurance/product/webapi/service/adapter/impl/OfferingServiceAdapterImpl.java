@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
-import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferingServiceAdapter;
 import pl.mpietrewicz.insurance.product.webapi.dto.converter.ApplicantDataConverter;

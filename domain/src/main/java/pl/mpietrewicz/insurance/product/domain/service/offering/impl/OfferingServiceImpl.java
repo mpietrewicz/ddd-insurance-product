@@ -12,7 +12,7 @@ import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingService;
 import pl.mpietrewicz.insurance.product.domain.service.offer.factory.AvailableOfferingFactory;
 import pl.mpietrewicz.insurance.product.domain.service.product.ProductAvailabilityService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
-import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 
 import java.util.List;

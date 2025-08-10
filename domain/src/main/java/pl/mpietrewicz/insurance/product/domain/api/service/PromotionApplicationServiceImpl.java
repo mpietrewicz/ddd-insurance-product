@@ -16,6 +16,7 @@ import pl.mpietrewicz.insurance.product.domain.repository.OfferRepository;
 import pl.mpietrewicz.insurance.product.domain.repository.ProductRepository;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.PromotionService;
 import pl.mpietrewicz.insurance.product.domainapi.PromotionApplicationService;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.util.List;
@@ -33,8 +34,9 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     private final PromotionService promotionService;
 
     @Override
-    public List<PromotionType> getAvailablePromotions(OfferId offerId, ProductId productId) {
-        Offer offer = getOffer(offerId);
+    public List<PromotionType> getAvailablePromotions(OfferingId offeringId) {
+        Offer offer = getOffer(offeringId.getOfferId());
+        ProductId productId = offer.getProductId(offeringId.getOfferingId());
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();
         InsuredId insuredId = new InsuredId(applicantId);
@@ -44,8 +46,9 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     }
 
     @Override
-    public void addPromotion(PromotionType promotionType, OfferId offerId, ProductId productId) {
-        Offer offer = getOffer(offerId);
+    public void addPromotion(PromotionType promotionType, OfferingId offeringId) {
+        Offer offer = getOffer(offeringId.getOfferId());
+        ProductId productId = offer.getProductId(offeringId.getOfferingId());
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();
         InsuredId insuredId = new InsuredId(applicantId);
@@ -55,8 +58,9 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     }
 
     @Override
-    public void removePromotion(PromotionType promotionType, OfferId offerId, ProductId productId) {
-        Offer offer = getOffer(offerId);
+    public void removePromotion(PromotionType promotionType, OfferingId offeringId) {
+        Offer offer = getOffer(offeringId.getOfferId());
+        ProductId productId = offer.getProductId(offeringId.getOfferingId());
 
         offer.removePromotion(promotionType, productId);
     }

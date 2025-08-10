@@ -77,6 +77,14 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return offering.getEntityId();
     }
 
+    public ProductId getProductId(Long offeringId) {
+        return offerings.stream()
+                .filter(offering -> offering.apply(offeringId))
+                .map(Offering::getProductId)
+                .findAny()
+                .orElseThrow(); // todo: zwórócić wyjatek że nie można znaleźć offeringu
+    }
+
     public void removeOffering(Long offeringId) {
         offerings.removeIf(offering -> offering.apply(offeringId));
     }

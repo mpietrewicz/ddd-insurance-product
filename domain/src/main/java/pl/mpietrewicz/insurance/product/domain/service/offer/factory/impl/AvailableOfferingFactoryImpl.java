@@ -6,7 +6,7 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
 import pl.mpietrewicz.insurance.product.domain.service.offer.factory.AvailableOfferingFactory;
-import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
 
 @DomainService
 @RequiredArgsConstructor

@@ -5,7 +5,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
 import pl.mpietrewicz.insurance.product.domain.dto.OfferingContext;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
-import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
 
 import java.util.List;
 

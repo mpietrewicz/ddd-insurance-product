@@ -19,7 +19,7 @@ import pl.mpietrewicz.insurance.product.domain.service.aplicant.ApplicantDataPro
 import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
-import pl.mpietrewicz.insurance.product.domainapi.dto.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.util.List;
