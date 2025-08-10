@@ -1,6 +1,7 @@
 package pl.mpietrewicz.insurance.product.domain.agregate.offer;
 
 import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embedded;
@@ -28,6 +29,7 @@ public class Offering extends BaseEntity {
     private ProductId productId;
 
     @ElementCollection
+    @CollectionTable(name = "offering_used_promotion")
     @Enumerated(EnumType.STRING)
     private List<PromotionType> usedPromotions = new ArrayList<>();
 
