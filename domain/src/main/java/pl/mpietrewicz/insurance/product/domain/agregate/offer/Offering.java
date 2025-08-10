@@ -44,7 +44,8 @@ public class Offering {
     @AttributeOverride(name = "amount", column = @Column(name = "premium", nullable = false))
     private Premium premium;
 
-    public Offering(ProductId productId, Premium premium) {
+    public Offering(OfferingId id, ProductId productId, Premium premium) {
+        this.id = id;
         this.productId = productId;
         this.premium = premium;
     }

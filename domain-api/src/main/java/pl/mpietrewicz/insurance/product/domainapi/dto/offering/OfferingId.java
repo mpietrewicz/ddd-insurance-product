@@ -5,23 +5,28 @@ import jakarta.persistence.Embeddable;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.PublishedLanguage;
 
 import java.util.Objects;
+import java.util.UUID;
 
 @PublishedLanguage
 @Embeddable
 public class OfferingId {
 
-    private Long id;
+    private String id;
 
     protected OfferingId() {
     }
 
-    public OfferingId(Long id) {
+    public OfferingId(String id) {
         this.id = Objects.requireNonNull(id, "offeringId");
     }
 
     @JsonValue
-    public Long getId() {
+    public String getId() {
         return id;
+    }
+
+    public static OfferingId generate(){
+        return new OfferingId(UUID.randomUUID().toString());
     }
 
     @Override

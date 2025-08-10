@@ -73,7 +73,9 @@ public class Offer extends BaseAggregateRoot<OfferId> {
     }
 
     public OfferingKey addOffering(ProductId productId, Premium premium) {
-        Offering offering = new Offering(productId, premium);
+        OfferingId offeringId = OfferingId.generate();
+        Offering offering = new Offering(offeringId, productId, premium);
+
         offerings.add(offering);
         return OfferingKey.of(this.aggregateId, offering.getId());
     }

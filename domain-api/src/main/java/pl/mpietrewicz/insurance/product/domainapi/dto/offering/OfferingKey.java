@@ -23,8 +23,12 @@ public class OfferingKey implements Serializable {
 
     @JsonCreator
     private OfferingKey(@JsonProperty("offerId") OfferId offerId, @JsonProperty("offeringId") OfferingId offeringId) {
-        if (offerId == null) throw new IllegalArgumentException("offerId cannot be null");
-        if (offeringId == null || offeringId.getId() <= 0) throw new IllegalArgumentException("offeringId must be > 0");
+        if (offerId == null) {
+            throw new IllegalArgumentException("offerId cannot be null");
+        }
+        if (offeringId == null || offeringId.getId().trim().isEmpty()) {
+            throw new IllegalArgumentException("offeringId cannot be null or empty");
+        }
         this.offerId = offerId;
         this.offeringId = offeringId;
     }
