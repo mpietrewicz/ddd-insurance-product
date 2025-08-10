@@ -11,7 +11,8 @@ import java.util.Objects;
 @Embeddable
 public class Premium {
 
-    public static final Premium TEN = new Premium(new BigDecimal(10));
+    public static final Premium ZERO = new Premium(BigDecimal.ZERO);
+    public static final Premium TEN = new Premium(BigDecimal.TEN);
 
     @Column(nullable = false)
     private BigDecimal amount;

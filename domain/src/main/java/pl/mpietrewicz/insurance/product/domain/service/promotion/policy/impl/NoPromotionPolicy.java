@@ -26,7 +26,7 @@ public class NoPromotionPolicy implements PromotionPolicy {
 
     @Override
     public Premium calculateDiscount(Premium basePremium) {
-        return basePremium;
+        return Premium.ZERO;
     }
 
 }

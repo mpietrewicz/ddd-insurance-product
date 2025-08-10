@@ -19,6 +19,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.contract.UsedPromotion;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedOffer;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domain.service.offer.policy.OfferStartPolicy;
+import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotChangeStartDateException;
 
@@ -26,6 +27,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static jakarta.persistence.CascadeType.ALL;
 
@@ -87,6 +90,28 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return offerings.stream()
                 .allMatch(offering -> productIds.stream()
                         .anyMatch(offering::applyProduct));
+    }
+
+    public boolean canAddPromotion(ProductId productId, PromotionType promotionType) {
+        return getOffering(productId)
+                .map(offering -> offering.canAddPromotion(promotionType))
+                .orElse(false);
+    }
+
+    public void addPromotion(ProductId productId, PromotionType promotionType) {
+        Optional<Offering> offering = getOffering(productId);
+        if (offering.isPresent()) {
+            offering.get().addPromotion(promotionType);
+        } else {
+            throw new NoSuchElementException(String.format("No offering for product %s", productId)); // todo: dodać
+            // customowy wyjatek ?
+        }
+    }
+
+    private Optional<Offering> getOffering(ProductId productId) {
+        return offerings.stream()
+                .filter(offering -> offering.applyProduct(productId))
+                .findAny();
     }
 
     public boolean canAcceptOffer(AccountingDate accountingDate) {

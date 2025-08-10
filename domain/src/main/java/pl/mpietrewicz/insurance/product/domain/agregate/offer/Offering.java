@@ -12,6 +12,7 @@ import pl.mpietrewicz.insurance.ddd.support.infrastructure.repo.BaseEntity;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -23,7 +24,7 @@ public class Offering extends BaseEntity {
     private ProductId productId;
 
     @Enumerated
-    private PromotionType promotionType;
+    private List<PromotionType> promotionTypes;
 
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "premium", nullable = false))
@@ -32,6 +33,19 @@ public class Offering extends BaseEntity {
     public Offering(ProductId productId, Premium premium) {
         this.productId = productId;
         this.premium = premium;
+    }
+
+    public boolean canAddPromotion(PromotionType promotionType) {
+        return true; // todo: popraiwć
+    }
+
+    public boolean addPromotion(PromotionType promotionType) {
+        if (this.promotionTypes.contains(promotionType)) {
+            throw new IllegalStateException("Offering already contains promotion of type " + promotionType);  //
+            // todo: dać inny wyjątek ?
+        } else {
+            return this.promotionTypes.add(promotionType);
+        }
     }
 
     public boolean apply(Long offeringId) {

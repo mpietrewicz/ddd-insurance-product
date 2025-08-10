@@ -83,7 +83,7 @@ public class Product extends BaseAggregateRoot<ProductId> {
                 && (validTo == null || isBeforeOrEqual(date, validTo));
     }
 
-    public List<PromotionType> getAvailablePromotionTypes(List<PromotionType> usedPromotionTypes) {
+    public List<PromotionType> getSupportedPromotions(List<PromotionType> usedPromotionTypes) {
         if (usedPromotionTypes.size() > 1) {
             return Collections.emptyList();
         } else {
@@ -91,7 +91,7 @@ public class Product extends BaseAggregateRoot<ProductId> {
         }
     }
 
-    public List<PromotionType> getAvailablePromotionTypes() {
+    public List<PromotionType> getSupportedPromotions() {
         return promotionTypes;
     }
 
