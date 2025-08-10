@@ -37,7 +37,9 @@ public class Offering {
     @ElementCollection
     @CollectionTable(name = "offering_used_promotion")
     @Enumerated(EnumType.STRING)
-    private List<PromotionType> usedPromotions = new ArrayList<>();
+    private List<PromotionType> usedPromotions = new ArrayList<>(); // todo: WAŻNE: tutaj powinienem oprócz typu
+    // promocji zapisywać jaki to ma wpływ na składkę najlepiej -5.00 lub -50%, tak zeby po usunięciu promocji kwota
+    // dalej była poprawna
 
     @Embedded
     @AttributeOverride(name = "amount", column = @Column(name = "premium", nullable = false))

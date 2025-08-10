@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.DOUBLE_PROMOTION;
-import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.NO_PROMOTION;
 import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.PROMOTION_AFTER_TWO_YEARS;
 import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType.SINGLE_PROMOTION;
 
@@ -88,7 +87,7 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
                         .maxEntryAge(maxEntryAge)
                         .forHealthyOnly(forHealthyOnly)
                         .build())
-                .promotionTypes(List.of(NO_PROMOTION, SINGLE_PROMOTION, DOUBLE_PROMOTION, PROMOTION_AFTER_TWO_YEARS))
+                .promotionTypes(List.of(SINGLE_PROMOTION, DOUBLE_PROMOTION, PROMOTION_AFTER_TWO_YEARS))
                 .build();
     }
 
