@@ -20,6 +20,7 @@ import pl.mpietrewicz.insurance.product.domain.service.offering.OfferingService;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.util.List;
@@ -66,14 +67,19 @@ public class OfferingApplicationServiceImpl implements OfferingApplicationServic
     }
 
     @Override
-    public void removeOffering(OfferId offerId, Long offeringId) {
-        Offer offer = getOffer(offerId);
-        offer.removeOffering(offeringId);
+    public void removeOffering(OfferingKey offeringKey) {
+        Offer offer = getOffer(offeringKey);
+        offer.removeOffering(offeringKey);
     }
 
     private Offer getOffer(OfferId offerId) {
         return offerRepository.load(offerId)
                 .orElseThrow(() -> new OfferNotFoundException(offerId));
+    }
+
+    private Offer getOffer(OfferingKey offeringKey) {
+        OfferId offerId = offeringKey.getOfferId();
+        return getOffer(offerId);
     }
 
     private Product getProduct(ProductId productId) {

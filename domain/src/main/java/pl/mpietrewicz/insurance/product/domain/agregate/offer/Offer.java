@@ -86,7 +86,8 @@ public class Offer extends BaseAggregateRoot<OfferId> {
                 .orElseThrow(); // todo: zwórócić wyjatek że nie można znaleźć offeringu
     }
 
-    public void removeOffering(Long offeringId) {
+    public void removeOffering(OfferingKey offeringKey) {
+        Long offeringId = offeringKey.getOfferingId();
         offerings.removeIf(offering -> offering.apply(offeringId));
     }
 
@@ -115,12 +116,6 @@ public class Offer extends BaseAggregateRoot<OfferId> {
             throw new NoSuchElementException(String.format("No offering for product %s", productId)); // todo: dodać
             // customowy wyjatek ?
         }
-    }
-
-    private Optional<Offering> getOffering(ProductId productId) {
-        return offerings.stream()
-                .filter(offering -> offering.applyProduct(productId))
-                .findAny();
     }
 
     public boolean canAcceptOffer(AccountingDate accountingDate) {
@@ -154,6 +149,12 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         } else {
             throw new CannotChangeStartDateException();
         }
+    }
+
+    private Optional<Offering> getOffering(ProductId productId) {
+        return offerings.stream()
+                .filter(offering -> offering.applyProduct(productId))
+                .findAny();
     }
 
     private List<AcceptedProduct> getAcceptedProducts() {

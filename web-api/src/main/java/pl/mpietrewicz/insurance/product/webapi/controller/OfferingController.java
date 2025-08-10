@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.AddOfferingRequest;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.AvailableOfferingModel;
@@ -113,7 +114,8 @@ public class OfferingController {
     @DeleteMapping("/{offeringId}")
     public ResponseEntity<RepresentationModel<?>> deleteOffering(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId) {
-        offeringApplicationService.removeOffering(offerId, offeringId);
+        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
+        offeringApplicationService.removeOffering(offeringKey);
 
         RepresentationModel<?> model = new RepresentationModel<>();
         model.add(getLinkToGetOfferings(offerId).withRel("other-offerings"));

@@ -5,6 +5,7 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ProductNotFoundException;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.AvailableOffering;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 
@@ -39,10 +40,9 @@ public interface OfferingApplicationService {
     /**
      * Removes a previously added offering from the specified offer.
      *
-     * @param offerId    the identifier of the offer
-     * @param offeringId the internal ID of the offering to be removed
+     * @param offeringKey the identifier of the offer
      * @throws OfferNotFoundException if the offer with the given ID does not exist
      */
-    void removeOffering(OfferId offerId, Long offeringId);
+    void removeOffering(OfferingKey offeringKey);
 
 }
