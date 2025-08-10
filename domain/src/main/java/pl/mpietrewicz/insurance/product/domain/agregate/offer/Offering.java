@@ -63,16 +63,16 @@ public class Offering extends BaseEntity {
         this.usedPromotions.add(promotionType);
     }
 
-    public void removePromotion(PromotionType promotionType) {
+    public void revokePromotion(PromotionType promotionType) {
         // todo: remove discount
         usedPromotions.remove(promotionType);
     }
 
-    public boolean apply(Long offeringId) {
+    public boolean matches(Long offeringId) {
         return Objects.equals(this.entityId, offeringId);
     }
 
-    public boolean applyProduct(ProductId productId) {
+    public boolean matches(ProductId productId) {
         return this.productId.equals(productId);
     }
 

@@ -62,7 +62,7 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
         Offer offer = getOffer(offeringKey.getOfferId());
         ProductId productId = offer.getProductId(offeringKey);
 
-        offer.removePromotion(promotionType, productId);
+        offer.revokePromotion(promotionType, productId);
     }
 
     private Offer getOffer(OfferId offerId) {

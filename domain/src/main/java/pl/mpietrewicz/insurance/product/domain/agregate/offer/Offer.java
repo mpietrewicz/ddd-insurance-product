@@ -79,12 +79,12 @@ public class Offer extends BaseAggregateRoot<OfferId> {
 
     public void removeOffering(OfferingKey offeringKey) {
         Long offeringId = offeringKey.getOfferingId();
-        offerings.removeIf(offering -> offering.apply(offeringId));
+        offerings.removeIf(offering -> offering.matches(offeringId));
     }
 
     public ProductId getProductId(OfferingKey offeringKey) {
         return offerings.stream()
-                .filter(offering -> offering.apply(offeringKey.getOfferingId()))
+                .filter(offering -> offering.matches(offeringKey.getOfferingId()))
                 .map(Offering::getProductId)
                 .findAny()
                 .orElseThrow(); // todo: zwórócić wyjatek że nie można znaleźć offeringu
@@ -106,11 +106,11 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         }
     }
 
-    public void removePromotion(PromotionType promotionType, ProductId productId) {
+    public void revokePromotion(PromotionType promotionType, ProductId productId) {
         offerings.stream()
-                .filter(offering -> offering.applyProduct(productId))
+                .filter(offering -> offering.matches(productId))
                 .findAny()
-                .ifPresent(offering -> offering.removePromotion(promotionType));
+                .ifPresent(offering -> offering.revokePromotion(promotionType));
     }
 
     public List<LocalDate> getAvailableStartDates(OfferStartPolicy offerStartPolicy, AccountingDate accountingDate) {
@@ -148,18 +148,18 @@ public class Offer extends BaseAggregateRoot<OfferId> {
 
     public boolean contains(ProductId productId) {
         return offerings.stream()
-                .anyMatch(offering -> offering.applyProduct(productId));
+                .anyMatch(offering -> offering.matches(productId));
     }
 
     public boolean contains(List<ProductId> productIds) {
         return offerings.stream()
                 .allMatch(offering -> productIds.stream()
-                        .anyMatch(offering::applyProduct));
+                        .anyMatch(offering::matches));
     }
 
     private Optional<Offering> getOffering(ProductId productId) {
         return offerings.stream()
-                .filter(offering -> offering.applyProduct(productId))
+                .filter(offering -> offering.matches(productId))
                 .findAny();
     }
 
