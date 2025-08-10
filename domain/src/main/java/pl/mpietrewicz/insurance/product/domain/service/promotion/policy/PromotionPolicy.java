@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface PromotionPolicy {
 
+    PromotionType getType();
+
     boolean support(PromotionType promotionType);
 
     boolean canOffer(LocalDate offerStartDate, List<UsedPromotion> usedPromotions);

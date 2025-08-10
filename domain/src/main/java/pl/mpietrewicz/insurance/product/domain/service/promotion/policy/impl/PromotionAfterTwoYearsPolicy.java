@@ -17,6 +17,11 @@ public class PromotionAfterTwoYearsPolicy implements PromotionPolicy {
     private static final long TWO_YEARS = 2;
 
     @Override
+    public PromotionType getType() {
+        return PROMOTION_AFTER_TWO_YEARS;
+    }
+
+    @Override
     public boolean support(PromotionType promotionType) {
         return promotionType == PROMOTION_AFTER_TWO_YEARS;
     }

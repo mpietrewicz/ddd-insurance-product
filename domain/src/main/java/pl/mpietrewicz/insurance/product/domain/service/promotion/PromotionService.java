@@ -1,6 +1,5 @@
 package pl.mpietrewicz.insurance.product.domain.service.promotion;
 
-import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
@@ -13,7 +12,5 @@ public interface PromotionService {
     List<PromotionType> getAvailablePromotions(Offer offer, Product product, List<Contract> contracts);
 
     void addPromotion(PromotionType promotionType, Offer offer, Product product, List<Contract> contracts);
-
-    Premium calculateDiscount(PromotionType promotionType, Product product);
 
 }

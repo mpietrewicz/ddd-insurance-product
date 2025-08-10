@@ -15,6 +15,11 @@ import static pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionTy
 public class SinglePromotionPolicy implements PromotionPolicy {
 
     @Override
+    public PromotionType getType() {
+        return SINGLE_PROMOTION;
+    }
+
+    @Override
     public boolean support(PromotionType promotionType) {
         return promotionType == SINGLE_PROMOTION;
     }
