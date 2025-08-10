@@ -17,7 +17,7 @@ public class OfferAcceptanceServiceImpl implements OfferAcceptanceService {
 
     @Override
     public boolean canAcceptOffer(Offer offer, AccountingDate accountingDate) {
-        return offer.canAcceptOffer(accountingDate);
+        return offer.canByAccepted(accountingDate);
     }
 
     @Override

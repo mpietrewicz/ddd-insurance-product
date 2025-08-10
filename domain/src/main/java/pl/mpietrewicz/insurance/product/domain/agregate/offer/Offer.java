@@ -6,6 +6,7 @@ import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.AggregateRoot;
 import pl.mpietrewicz.insurance.ddd.annotations.domain.InvariantsList;
@@ -48,8 +49,10 @@ public class Offer extends BaseAggregateRoot<OfferId> {
 
     @Embedded
     @AttributeOverride(name = "aggregateId", column = @Column(name = "applicantId", nullable = false))
+    @Getter
     private ApplicantId applicantId;
 
+    @Getter
     private LocalDate startDate;
 
     @OneToMany(cascade = ALL)
@@ -64,12 +67,8 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         this.startDate = startDate;
     }
 
-    public ApplicantId getApplicantId() {
-        return applicantId;
-    }
-
-    public LocalDate getStartDate() {
-        return startDate;
+    public OfferId getOfferId() {
+        return aggregateId;
     }
 
     public Long addOffering(ProductId productId, Premium premium) {
@@ -78,28 +77,17 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return offering.getEntityId();
     }
 
+    public void removeOffering(OfferingKey offeringKey) {
+        Long offeringId = offeringKey.getOfferingId();
+        offerings.removeIf(offering -> offering.apply(offeringId));
+    }
+
     public ProductId getProductId(OfferingKey offeringKey) {
         return offerings.stream()
                 .filter(offering -> offering.apply(offeringKey.getOfferingId()))
                 .map(Offering::getProductId)
                 .findAny()
                 .orElseThrow(); // todo: zwórócić wyjatek że nie można znaleźć offeringu
-    }
-
-    public void removeOffering(OfferingKey offeringKey) {
-        Long offeringId = offeringKey.getOfferingId();
-        offerings.removeIf(offering -> offering.apply(offeringId));
-    }
-
-    public boolean contains(ProductId productId) {
-        return offerings.stream()
-                .anyMatch(offering -> offering.applyProduct(productId));
-    }
-
-    public boolean contains(List<ProductId> productIds) {
-        return offerings.stream()
-                .allMatch(offering -> productIds.stream()
-                        .anyMatch(offering::applyProduct));
     }
 
     public boolean canApplyPromotion(PromotionType promotionType, ProductId productId) {
@@ -118,19 +106,11 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         }
     }
 
-    public boolean canAcceptOffer(AccountingDate accountingDate) {
-        return !accepted && !offerings.isEmpty() && accountingDate.isBefore(startDate);
-    }
-
-    public AcceptedOffer accept(AccountingDate accountingDate) {
-        if (!canAcceptOffer(accountingDate)) {
-            throw new CannotAcceptOfferException();
-        }
-
-        accepted = true;
-
-        List<AcceptedProduct> acceptedProducts = getAcceptedProducts();
-        return new AcceptedOffer(startDate, acceptedProducts);
+    public void removePromotion(PromotionType promotionType, ProductId productId) {
+        offerings.stream()
+                .filter(offering -> offering.applyProduct(productId))
+                .findAny()
+                .ifPresent(offering -> offering.removePromotion(promotionType));
     }
 
     public List<LocalDate> getAvailableStartDates(OfferStartPolicy offerStartPolicy, AccountingDate accountingDate) {
@@ -151,6 +131,32 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         }
     }
 
+    public boolean canByAccepted(AccountingDate accountingDate) {
+        return !accepted && !offerings.isEmpty() && accountingDate.isBefore(startDate);
+    }
+
+    public AcceptedOffer accept(AccountingDate accountingDate) {
+        if (!canByAccepted(accountingDate)) {
+            throw new CannotAcceptOfferException();
+        }
+
+        accepted = true;
+
+        List<AcceptedProduct> acceptedProducts = getAcceptedProducts();
+        return new AcceptedOffer(startDate, acceptedProducts);
+    }
+
+    public boolean contains(ProductId productId) {
+        return offerings.stream()
+                .anyMatch(offering -> offering.applyProduct(productId));
+    }
+
+    public boolean contains(List<ProductId> productIds) {
+        return offerings.stream()
+                .allMatch(offering -> productIds.stream()
+                        .anyMatch(offering::applyProduct));
+    }
+
     private Optional<Offering> getOffering(ProductId productId) {
         return offerings.stream()
                 .filter(offering -> offering.applyProduct(productId))
@@ -165,17 +171,6 @@ public class Offer extends BaseAggregateRoot<OfferId> {
 
     private List<Offering> getAcceptedOffering() {
         return offerings;
-    }
-
-    public OfferId getOfferId() {
-        return aggregateId;
-    }
-
-    public void removePromotion(PromotionType promotionType, ProductId productId) {
-        offerings.stream()
-                .filter(offering -> offering.applyProduct(productId))
-                .findAny()
-                .ifPresent(offering -> offering.removePromotion(promotionType));
     }
 
 }
