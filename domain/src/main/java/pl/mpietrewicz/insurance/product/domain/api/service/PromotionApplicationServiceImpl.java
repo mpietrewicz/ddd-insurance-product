@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import pl.mpietrewicz.insurance.ddd.annotations.application.ApplicationService;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ApplicantId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.InsuredId;
-import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.OfferNotFoundException;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.exception.ProductNotFoundException;
@@ -35,7 +34,7 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
 
     @Override
     public List<PromotionType> getAvailablePromotions(OfferingKey offeringKey) {
-        Offer offer = getOffer(offeringKey.getOfferId());
+        Offer offer = getOffer(offeringKey);
         ProductId productId = offer.getProductId(offeringKey);
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();
@@ -47,33 +46,31 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
 
     @Override
     public void applyPromotion(PromotionType promotionType, OfferingKey offeringKey) {
-        Offer offer = getOffer(offeringKey.getOfferId());
+        Offer offer = getOffer(offeringKey);
         ProductId productId = offer.getProductId(offeringKey);
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();
         InsuredId insuredId = new InsuredId(applicantId);
         List<Contract> allContracts = contractRepository.findBy(insuredId);
 
-        promotionService.applyPromotion(promotionType, offer, product, allContracts);
+        promotionService.applyPromotion(promotionType, offer, offeringKey, product, allContracts);
     }
 
     @Override
     public List<PromotionType> listRevocablePromotions(OfferingKey offeringKey) {
-        Offer offer = getOffer(offeringKey.getOfferId());
+        Offer offer = getOffer(offeringKey);
         return offer.listRevocablePromotions(offeringKey);
     }
 
     @Override
     public void revokePromotion(PromotionType promotionType, OfferingKey offeringKey) {
-        Offer offer = getOffer(offeringKey.getOfferId());
-        ProductId productId = offer.getProductId(offeringKey);
-
-        offer.revokePromotion(promotionType, productId);
+        Offer offer = getOffer(offeringKey);
+        offer.revokePromotion(promotionType, offeringKey);
     }
 
-    private Offer getOffer(OfferId offerId) {
-        return offerRepository.load(offerId)
-                .orElseThrow(() -> new OfferNotFoundException(offerId));
+    private Offer getOffer(OfferingKey offeringKey) {
+        return offerRepository.load(offeringKey.getOfferId())
+                .orElseThrow(() -> new OfferNotFoundException(offeringKey.getOfferId()));
     }
 
     private Product getProduct(ProductId productId) {

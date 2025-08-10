@@ -96,19 +96,21 @@ public class Offer extends BaseAggregateRoot<OfferId> {
                 .orElse(false);
     }
 
-    public void applyPromotion(ProductId productId, PromotionPolicy policy, PromotionType promotionType) {
-        Optional<Offering> offering = getOffering(productId);
+    public void applyPromotion(OfferingKey offeringKey, PromotionPolicy policy, PromotionType promotionType) {
+        Optional<Offering> offering = offerings.stream()
+                .filter(o -> o.matches(offeringKey.getOfferingId()))
+                .findAny();
         if (offering.isPresent()) {
             offering.get().applyPromotion(policy, promotionType);
         } else {
-            throw new NoSuchElementException(String.format("No offering for product %s", productId)); // todo: dodać
+            throw new NoSuchElementException("No offering for offering: " + offeringKey); // todo: dodać
             // customowy wyjatek ?
         }
     }
 
-    public void revokePromotion(PromotionType promotionType, ProductId productId) {
+    public void revokePromotion(PromotionType promotionType, OfferingKey offeringKey) {
         offerings.stream()
-                .filter(offering -> offering.matches(productId))
+                .filter(offering -> offering.matches(offeringKey.getOfferingId()))
                 .findAny()
                 .ifPresent(offering -> offering.revokePromotion(promotionType));
     }

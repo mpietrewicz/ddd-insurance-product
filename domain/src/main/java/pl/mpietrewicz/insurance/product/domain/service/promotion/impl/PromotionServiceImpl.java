@@ -8,6 +8,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.PromotionService;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
@@ -34,11 +35,11 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public void applyPromotion(PromotionType promotionType, Offer offer, Product product, List<Contract> contracts) {
+    public void applyPromotion(PromotionType promotionType, Offer offer, OfferingKey offeringKey, Product product, List<Contract> contracts) {
         List<PromotionType> availablePromotions = getAvailablePromotions(offer, product, contracts);
         if (availablePromotions.contains(promotionType)) {
             PromotionPolicy promotionPolicy = promotionPolicyMap.get(promotionType);
-            offer.applyPromotion(product.getProductId(), promotionPolicy, promotionType);
+            offer.applyPromotion(offeringKey, promotionPolicy, promotionType);
         }
     }
 
