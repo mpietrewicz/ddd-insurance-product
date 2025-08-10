@@ -25,6 +25,8 @@ import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.PromotionServiceAdapter;
 
+import java.util.function.Consumer;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -48,14 +50,10 @@ public class PromotionController {
     @GetMapping("/available")
     public CollectionModel<PromotionType> getAvailablePromotions(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId) {
-        OfferingKey offeringKey = toOfferingKey(offerId, offeringId);
+        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         CollectionModel<PromotionType> availablePromotions = promotionServiceAdapter.getAvailablePromotions(offeringKey);
 
-        if (!availablePromotions.getContent().isEmpty()) {
-            availablePromotions.getContent()
-                    .forEach(promotionType ->
-                            availablePromotions.add(buildAddPromotionLink(offerId, offeringId, promotionType)));
-        }
+        availablePromotions.getContent().forEach(addApplyPromotionLink(offerId, offeringId, availablePromotions));
         return availablePromotions;
     }
 
@@ -70,7 +68,7 @@ public class PromotionController {
     public ResponseEntity<RepresentationModel<?>> applyPromotion(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId,
                                                                  @RequestParam PromotionType promotionType) {
-        OfferingKey offeringKey = toOfferingKey(offerId, offeringId);
+        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         promotionApplicationService.applyPromotion(promotionType, offeringKey);
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -87,7 +85,7 @@ public class PromotionController {
     public ResponseEntity<RepresentationModel<?>> revokePromotion(@PathVariable OfferId offerId,
                                                                   @PathVariable Long offeringId,
                                                                   @RequestParam PromotionType promotionType) {
-        OfferingKey offeringKey = toOfferingKey(offerId, offeringId);
+        OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         promotionApplicationService.revokePromotion(promotionType, offeringKey);
 
         return ResponseEntity.ok()
@@ -99,13 +97,16 @@ public class PromotionController {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    private static OfferingKey toOfferingKey(OfferId offerId, Long offeringId) {
-        return OfferingKey.of(offerId, offeringId);
+    private static Consumer<PromotionType> addApplyPromotionLink(OfferId offerId, Long offeringId,
+                                                                 CollectionModel<PromotionType> availablePromotions) {
+        return promotionType -> availablePromotions.add(buildApplyPromotionLink(offerId, offeringId,
+                promotionType));
     }
 
-    private static Link buildAddPromotionLink(OfferId offerId, Long offeringId, PromotionType promotionType) {
+    private static Link buildApplyPromotionLink(OfferId offerId, Long offeringId, PromotionType promotionType) {
         return linkTo(methodOn(PromotionController.class)
-                .applyPromotion(offerId, offeringId, promotionType)).withRel(REL_ADD_PROMOTION);
+                .applyPromotion(offerId, offeringId, promotionType))
+                .withRel(REL_ADD_PROMOTION);
     }
 
 }
