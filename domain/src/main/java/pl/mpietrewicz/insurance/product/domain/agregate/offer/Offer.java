@@ -113,6 +113,15 @@ public class Offer extends BaseAggregateRoot<OfferId> {
                 .ifPresent(offering -> offering.revokePromotion(promotionType));
     }
 
+    public List<PromotionType> listRevocablePromotions(OfferingKey offeringKey) {
+        Long offeringId = offeringKey.getOfferingId();
+        Offering offering = offerings.stream()
+                .filter(o -> o.matches(offeringId))
+                .findAny()
+                .orElseThrow();
+        return offering.listRevocablePromotions();
+    }
+
     public List<LocalDate> getAvailableStartDates(OfferStartPolicy offerStartPolicy, AccountingDate accountingDate) {
         if (!accepted && accountingDate.isBefore(startDate)) {
             List<LocalDate> offerStartDates = offerStartPolicy.determine(accountingDate);

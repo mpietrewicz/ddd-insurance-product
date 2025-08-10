@@ -25,7 +25,6 @@ import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
@@ -37,6 +36,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 public class PromotionController {
 
     private static final String REL_APPLY_PROMOTION = "apply-promotion";
+    private static final String REL_REVOKE_PROMOTION = "revoke-promotion";
 
     private final PromotionApplicationService promotionApplicationService;
 
@@ -50,9 +50,13 @@ public class PromotionController {
                                                                  @PathVariable Long offeringId) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
         List<PromotionType> availablePromotions = promotionApplicationService.getAvailablePromotions(offeringKey);
-        CollectionModel<PromotionType> promotionModel = CollectionModel.of(availablePromotions);
 
-        promotionModel.getContent().forEach(addApplyPromotionLink(offerId, offeringId, promotionModel));
+        CollectionModel<PromotionType> promotionModel = CollectionModel.of(availablePromotions);
+        addApplyPromotionLinks(promotionModel, availablePromotions, offeringKey);
+
+        List<PromotionType> revocablePromotions = promotionApplicationService.listRevocablePromotions(offeringKey);
+        addRevokePromotionLinks(promotionModel, revocablePromotions, offeringKey);
+
         return promotionModel;
     }
 
@@ -96,15 +100,38 @@ public class PromotionController {
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    private static Consumer<PromotionType> addApplyPromotionLink(OfferId offerId, Long offeringId,
-                                                                 CollectionModel<PromotionType> promotionModel) {
-        return type -> promotionModel.add(buildApplyPromotionLink(offerId, offeringId, type));
+    private void addApplyPromotionLinks(CollectionModel<PromotionType> promotionModel, 
+                                        List<PromotionType> availablePromotions, OfferingKey offeringKey) {
+        for (PromotionType promotionType : availablePromotions) {
+            Link link = buildApplyPromotionLink(offeringKey, promotionType);
+            promotionModel.add(link);
+        }
     }
 
-    private static Link buildApplyPromotionLink(OfferId offerId, Long offeringId, PromotionType type) {
+    private void addRevokePromotionLinks(CollectionModel<PromotionType> promotionModel,
+                                         List<PromotionType> revocablePromotions, OfferingKey offeringKey) {
+        for (PromotionType promotionType : revocablePromotions) {
+            Link link = buildRevokePromotionLink(offeringKey, promotionType);
+            promotionModel.add(link);
+        }
+    }
+
+    private static Link buildApplyPromotionLink(OfferingKey offeringKey, PromotionType promotionType) {
+        OfferId offerId = offeringKey.getOfferId();
+        Long offeringId = offeringKey.getOfferingId();
+
         return linkTo(methodOn(PromotionController.class)
-                .applyPromotion(offerId, offeringId, type))
+                .applyPromotion(offerId, offeringId, promotionType))
                 .withRel(REL_APPLY_PROMOTION);
+    }
+
+    private static Link buildRevokePromotionLink(OfferingKey offeringKey, PromotionType promotionType) {
+        OfferId offerId = offeringKey.getOfferId();
+        Long offeringId = offeringKey.getOfferingId();
+
+        return linkTo(methodOn(PromotionController.class)
+                .revokePromotion(offerId, offeringId, promotionType))
+                .withRel(REL_REVOKE_PROMOTION);
     }
 
 }

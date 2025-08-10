@@ -80,4 +80,8 @@ public class Offering extends BaseEntity {
         return new AcceptedProduct(productId, Premium.TEN, usedPromotions);
     }
 
+    public List<PromotionType> listRevocablePromotions() {
+        return usedPromotions;
+    }
+
 }

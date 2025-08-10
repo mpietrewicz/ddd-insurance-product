@@ -58,6 +58,12 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     }
 
     @Override
+    public List<PromotionType> listRevocablePromotions(OfferingKey offeringKey) {
+        Offer offer = getOffer(offeringKey.getOfferId());
+        return offer.listRevocablePromotions(offeringKey);
+    }
+
+    @Override
     public void revokePromotion(PromotionType promotionType, OfferingKey offeringKey) {
         Offer offer = getOffer(offeringKey.getOfferId());
         ProductId productId = offer.getProductId(offeringKey);

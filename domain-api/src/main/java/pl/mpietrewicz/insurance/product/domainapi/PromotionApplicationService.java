@@ -7,9 +7,12 @@ import java.util.List;
 
 public interface PromotionApplicationService {
 
-    List<PromotionType> getAvailablePromotions(OfferingKey offeringKey);
+    List<PromotionType> getAvailablePromotions(OfferingKey offeringKey); // todo: wszędzie List<PromotionType>
+    // zamienić na Set<PromotionType>
 
     void applyPromotion(PromotionType promotionType, OfferingKey offeringKey);
+
+    List<PromotionType> listRevocablePromotions(OfferingKey offeringKey);
 
     void revokePromotion(PromotionType promotionType, OfferingKey offeringKey);
 
