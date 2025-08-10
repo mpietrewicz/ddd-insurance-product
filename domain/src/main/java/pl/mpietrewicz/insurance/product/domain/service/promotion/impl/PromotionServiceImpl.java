@@ -7,10 +7,8 @@ import pl.mpietrewicz.insurance.product.domain.agregate.contract.Contract;
 import pl.mpietrewicz.insurance.product.domain.agregate.contract.UsedPromotion;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.Offer;
 import pl.mpietrewicz.insurance.product.domain.agregate.product.Product;
-import pl.mpietrewicz.insurance.product.domain.service.promotion.PromotionPolicyProvider;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.PromotionService;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
-import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.impl.NoPromotionPolicy;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.time.LocalDate;
@@ -24,10 +22,6 @@ public class PromotionServiceImpl implements PromotionService {
 
     private final List<PromotionPolicy> promotionPolicies;
 
-    private final NoPromotionPolicy noPromotionPolicy;
-
-    private final PromotionPolicyProvider promotionPolicyProvider;
-
     @Override
     public List<PromotionType> getAvailablePromotions(Offer offer, Product product, List<Contract> contracts) {
         return product.getSupportedPromotions().stream()
@@ -40,7 +34,11 @@ public class PromotionServiceImpl implements PromotionService {
     public void addPromotion(PromotionType promotionType, Offer offer, Product product, List<Contract> contracts) {
         List<PromotionType> availablePromotions = getAvailablePromotions(offer, product, contracts);
         if (availablePromotions.contains(promotionType)) {
-            offer.addPromotion(product.getProductId(), promotionType);
+            PromotionPolicy promotionPolicy = promotionPolicies.stream()
+                    .filter(policy -> policy.support(promotionType))
+                    .findAny()
+                    .orElseThrow();
+            offer.applyPromotion(product.getProductId(), promotionPolicy, promotionType);
         }
     }
 

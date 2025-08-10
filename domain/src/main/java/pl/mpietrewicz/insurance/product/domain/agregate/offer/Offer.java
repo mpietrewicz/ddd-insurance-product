@@ -19,6 +19,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.contract.UsedPromotion;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedOffer;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domain.service.offer.policy.OfferStartPolicy;
+import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotChangeStartDateException;
@@ -98,10 +99,10 @@ public class Offer extends BaseAggregateRoot<OfferId> {
                 .orElse(false);
     }
 
-    public void addPromotion(ProductId productId, PromotionType promotionType) {
+    public void applyPromotion(ProductId productId, PromotionPolicy policy, PromotionType promotionType) {
         Optional<Offering> offering = getOffering(productId);
         if (offering.isPresent()) {
-            offering.get().addPromotion(promotionType);
+            offering.get().applyPromotion(policy, promotionType);
         } else {
             throw new NoSuchElementException(String.format("No offering for product %s", productId)); // todo: dodać
             // customowy wyjatek ?
