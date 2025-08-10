@@ -18,7 +18,7 @@ public class OfferingModelAssemblerImpl implements OfferingModelAssembler,
         return OfferingModel.builder()
                 .id(entity.getId())
                 .productId(entity.getProductId())
-                .promotion(entity.getPromotionType())
+                .usedPromotions(entity.getUsedPromotions())
                 .build();
     }
 

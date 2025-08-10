@@ -8,6 +8,8 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
+import java.util.List;
+
 @Getter
 @Builder
 @Schema(description = "Represents an offering associated with a product, " +
@@ -20,7 +22,7 @@ public class OfferingModel extends RepresentationModel<OfferingModel> {
     @Schema(description = "The ID of the product associated with this offering.")
     private ProductId productId;
 
-    @Schema(description = "Promotion type for the offering", example = "[NO_PROMOTION, SINGLE_PROMOTION]")
-    private PromotionType promotion;
+    @Schema(description = "Used promotion types for the offering", example = "[SINGLE_PROMOTION, DOUBLE_PROMOTION]")
+    private List<PromotionType> usedPromotions;
 
 }
