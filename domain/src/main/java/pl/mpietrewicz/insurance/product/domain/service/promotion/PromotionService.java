@@ -11,6 +11,6 @@ public interface PromotionService {
 
     List<PromotionType> getAvailablePromotions(Offer offer, Product product, List<Contract> contracts);
 
-    void addPromotion(PromotionType promotionType, Offer offer, Product product, List<Contract> contracts);
+    void applyPromotion(PromotionType promotionType, Offer offer, Product product, List<Contract> contracts);
 
 }

@@ -65,11 +65,11 @@ public class PromotionController {
             @ApiResponse(responseCode = "409", description = "Offering with requested product id cannot be added")
     })
     @PostMapping
-    public ResponseEntity<RepresentationModel<?>> addPromotion(@PathVariable OfferId offerId,
-                                                               @PathVariable Long offeringId,
-                                                               @RequestParam PromotionType promotionType) {
+    public ResponseEntity<RepresentationModel<?>> applyPromotion(@PathVariable OfferId offerId,
+                                                                 @PathVariable Long offeringId,
+                                                                 @RequestParam PromotionType promotionType) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
-        promotionApplicationService.addPromotion(promotionType, offeringKey);
+        promotionApplicationService.applyPromotion(promotionType, offeringKey);
 
         RepresentationModel<?> model = new RepresentationModel<>();
         return ResponseEntity.ok()
@@ -83,11 +83,11 @@ public class PromotionController {
             @ApiResponse(responseCode = "404", description = "Offering not found")
     })
     @DeleteMapping
-    public ResponseEntity<RepresentationModel<?>> removePromotion(@PathVariable OfferId offerId,
+    public ResponseEntity<RepresentationModel<?>> revokePromotion(@PathVariable OfferId offerId,
                                                                   @PathVariable Long offeringId,
                                                                   @RequestParam PromotionType promotionType) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
-        promotionApplicationService.removePromotion(promotionType, offeringKey);
+        promotionApplicationService.revokePromotion(promotionType, offeringKey);
 
         RepresentationModel<?> model = new RepresentationModel<>();
         return ResponseEntity.ok()
@@ -101,7 +101,7 @@ public class PromotionController {
 
     private static Link getLinkToAddPromotion(OfferId offerId, Long offeringId, PromotionType promotionType) {
         return linkTo(methodOn(PromotionController.class)
-                .addPromotion(offerId, offeringId, promotionType)).withRel("add-promotion");
+                .applyPromotion(offerId, offeringId, promotionType)).withRel("add-promotion");
     }
 
 }

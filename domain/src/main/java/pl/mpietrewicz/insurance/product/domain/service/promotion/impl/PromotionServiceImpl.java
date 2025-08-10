@@ -34,7 +34,7 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public void addPromotion(PromotionType promotionType, Offer offer, Product product, List<Contract> contracts) {
+    public void applyPromotion(PromotionType promotionType, Offer offer, Product product, List<Contract> contracts) {
         List<PromotionType> availablePromotions = getAvailablePromotions(offer, product, contracts);
         if (availablePromotions.contains(promotionType)) {
             PromotionPolicy promotionPolicy = promotionPolicyMap.get(promotionType);

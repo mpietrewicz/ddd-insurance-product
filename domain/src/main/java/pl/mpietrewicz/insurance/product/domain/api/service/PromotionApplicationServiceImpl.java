@@ -46,7 +46,7 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     }
 
     @Override
-    public void addPromotion(PromotionType promotionType, OfferingKey offeringKey) {
+    public void applyPromotion(PromotionType promotionType, OfferingKey offeringKey) {
         Offer offer = getOffer(offeringKey.getOfferId());
         ProductId productId = offer.getProductId(offeringKey);
         Product product = getProduct(productId);
@@ -54,11 +54,11 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
         InsuredId insuredId = new InsuredId(applicantId);
         List<Contract> allContracts = contractRepository.findBy(insuredId);
 
-        promotionService.addPromotion(promotionType, offer, product, allContracts);
+        promotionService.applyPromotion(promotionType, offer, product, allContracts);
     }
 
     @Override
-    public void removePromotion(PromotionType promotionType, OfferingKey offeringKey) {
+    public void revokePromotion(PromotionType promotionType, OfferingKey offeringKey) {
         Offer offer = getOffer(offeringKey.getOfferId());
         ProductId productId = offer.getProductId(offeringKey);
 

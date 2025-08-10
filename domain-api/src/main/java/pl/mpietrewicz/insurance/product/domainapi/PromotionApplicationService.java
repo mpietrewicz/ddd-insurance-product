@@ -9,8 +9,8 @@ public interface PromotionApplicationService {
 
     List<PromotionType> getAvailablePromotions(OfferingKey offeringKey);
 
-    void addPromotion(PromotionType promotionType, OfferingKey offeringKey);
+    void applyPromotion(PromotionType promotionType, OfferingKey offeringKey);
 
-    void removePromotion(PromotionType promotionType, OfferingKey offeringKey);
+    void revokePromotion(PromotionType promotionType, OfferingKey offeringKey);
 
 }
