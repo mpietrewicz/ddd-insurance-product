@@ -19,6 +19,7 @@ import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedOffer;
 import pl.mpietrewicz.insurance.product.domain.agregate.offer.dto.AcceptedProduct;
 import pl.mpietrewicz.insurance.product.domain.service.offer.policy.OfferStartPolicy;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.policy.PromotionPolicy;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotAcceptOfferException;
 import pl.mpietrewicz.insurance.product.domainapi.exception.CannotChangeStartDateException;
@@ -77,9 +78,9 @@ public class Offer extends BaseAggregateRoot<OfferId> {
         return offering.getEntityId();
     }
 
-    public ProductId getProductId(Long offeringId) {
+    public ProductId getProductId(OfferingKey offeringKey) {
         return offerings.stream()
-                .filter(offering -> offering.apply(offeringId))
+                .filter(offering -> offering.apply(offeringKey.getOfferingId()))
                 .map(Offering::getProductId)
                 .findAny()
                 .orElseThrow(); // todo: zwórócić wyjatek że nie można znaleźć offeringu

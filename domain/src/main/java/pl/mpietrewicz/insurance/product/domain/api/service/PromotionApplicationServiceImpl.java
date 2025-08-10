@@ -2,6 +2,7 @@ package pl.mpietrewicz.insurance.product.domain.api.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import pl.mpietrewicz.insurance.ddd.annotations.application.ApplicationService;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ApplicantId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.InsuredId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
@@ -16,12 +17,12 @@ import pl.mpietrewicz.insurance.product.domain.repository.OfferRepository;
 import pl.mpietrewicz.insurance.product.domain.repository.ProductRepository;
 import pl.mpietrewicz.insurance.product.domain.service.promotion.PromotionService;
 import pl.mpietrewicz.insurance.product.domainapi.PromotionApplicationService;
-import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 
 import java.util.List;
 
-@Service
+@ApplicationService
 @RequiredArgsConstructor
 public class PromotionApplicationServiceImpl implements PromotionApplicationService {
 
@@ -34,9 +35,9 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     private final PromotionService promotionService;
 
     @Override
-    public List<PromotionType> getAvailablePromotions(OfferingId offeringId) {
-        Offer offer = getOffer(offeringId.getOfferId());
-        ProductId productId = offer.getProductId(offeringId.getOfferingId());
+    public List<PromotionType> getAvailablePromotions(OfferingKey offeringKey) {
+        Offer offer = getOffer(offeringKey.getOfferId());
+        ProductId productId = offer.getProductId(offeringKey);
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();
         InsuredId insuredId = new InsuredId(applicantId);
@@ -46,9 +47,9 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     }
 
     @Override
-    public void addPromotion(PromotionType promotionType, OfferingId offeringId) {
-        Offer offer = getOffer(offeringId.getOfferId());
-        ProductId productId = offer.getProductId(offeringId.getOfferingId());
+    public void addPromotion(PromotionType promotionType, OfferingKey offeringKey) {
+        Offer offer = getOffer(offeringKey.getOfferId());
+        ProductId productId = offer.getProductId(offeringKey);
         Product product = getProduct(productId);
         ApplicantId applicantId = offer.getApplicantId();
         InsuredId insuredId = new InsuredId(applicantId);
@@ -58,9 +59,9 @@ public class PromotionApplicationServiceImpl implements PromotionApplicationServ
     }
 
     @Override
-    public void removePromotion(PromotionType promotionType, OfferingId offeringId) {
-        Offer offer = getOffer(offeringId.getOfferId());
-        ProductId productId = offer.getProductId(offeringId.getOfferingId());
+    public void removePromotion(PromotionType promotionType, OfferingKey offeringKey) {
+        Offer offer = getOffer(offeringKey.getOfferId());
+        ProductId productId = offer.getProductId(offeringKey);
 
         offer.removePromotion(promotionType, productId);
     }

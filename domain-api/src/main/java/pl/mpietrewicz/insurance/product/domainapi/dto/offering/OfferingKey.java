@@ -13,7 +13,7 @@ import java.io.Serializable;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class OfferingId implements Serializable {
+public class OfferingKey implements Serializable {
 
     @NonNull
     private final OfferId offerId;
@@ -22,7 +22,7 @@ public class OfferingId implements Serializable {
     private final Long offeringId;
 
     @JsonCreator
-    private OfferingId(
+    private OfferingKey(
             @JsonProperty("offerId") OfferId offerId,
             @JsonProperty("offeringId") Long offeringId
     ) {
@@ -32,8 +32,8 @@ public class OfferingId implements Serializable {
         this.offeringId = offeringId;
     }
 
-    public static OfferingId of(OfferId offerId, Long offeringId) {
-        return new OfferingId(offerId, offeringId);
+    public static OfferingKey of(OfferId offerId, Long offeringId) {
+        return new OfferingKey(offerId, offeringId);
     }
 
 }

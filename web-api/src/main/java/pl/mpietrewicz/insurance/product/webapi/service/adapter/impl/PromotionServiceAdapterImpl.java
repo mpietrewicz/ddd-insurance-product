@@ -5,7 +5,7 @@ import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.product.domainapi.PromotionApplicationService;
-import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingId;
+import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.webapi.service.adapter.PromotionServiceAdapter;
 
@@ -18,8 +18,8 @@ public class PromotionServiceAdapterImpl implements PromotionServiceAdapter {
     private final PromotionApplicationService promotionApplicationService;
 
     @Override
-    public CollectionModel<PromotionType> getAvailablePromotions(OfferingId offeringId) {
-        List<PromotionType> availablePromotions = promotionApplicationService.getAvailablePromotions(offeringId);
+    public CollectionModel<PromotionType> getAvailablePromotions(OfferingKey offeringKey) {
+        List<PromotionType> availablePromotions = promotionApplicationService.getAvailablePromotions(offeringKey);
         return CollectionModel.of(availablePromotions);
     }
 
