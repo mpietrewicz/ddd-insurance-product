@@ -36,7 +36,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "Offering promotions", description = "Managing promotions for a specific offerings")
 public class PromotionController {
 
-    private static final String REL_ADD_PROMOTION = "add-promotion";
+    private static final String REL_APPLY_PROMOTION = "apply-promotion";
 
     private final PromotionServiceAdapter promotionServiceAdapter;
 
@@ -106,7 +106,7 @@ public class PromotionController {
     private static Link buildApplyPromotionLink(OfferId offerId, Long offeringId, PromotionType promotionType) {
         return linkTo(methodOn(PromotionController.class)
                 .applyPromotion(offerId, offeringId, promotionType))
-                .withRel(REL_ADD_PROMOTION);
+                .withRel(REL_APPLY_PROMOTION);
     }
 
 }

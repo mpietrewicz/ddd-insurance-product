@@ -3,7 +3,6 @@ package pl.mpietrewicz.insurance.product.webapi.service.adapter.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.stereotype.Service;
-import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.product.domainapi.PromotionApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
@@ -21,11 +20,6 @@ public class PromotionServiceAdapterImpl implements PromotionServiceAdapter {
     public CollectionModel<PromotionType> getAvailablePromotions(OfferingKey offeringKey) {
         List<PromotionType> availablePromotions = promotionApplicationService.getAvailablePromotions(offeringKey);
         return CollectionModel.of(availablePromotions);
-    }
-
-    @Override
-    public void addPromotion(PromotionType promotionType, OfferId offerId, Long offeringId) {
-
     }
 
 }
