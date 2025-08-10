@@ -23,8 +23,8 @@ import pl.mpietrewicz.insurance.product.domainapi.PromotionApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.PromotionType;
 import pl.mpietrewicz.insurance.product.domainapi.exception.ProductNotAvailableException;
-import pl.mpietrewicz.insurance.product.webapi.service.adapter.PromotionServiceAdapter;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -38,8 +38,6 @@ public class PromotionController {
 
     private static final String REL_APPLY_PROMOTION = "apply-promotion";
 
-    private final PromotionServiceAdapter promotionServiceAdapter;
-
     private final PromotionApplicationService promotionApplicationService;
 
     @Operation(summary = "Get available promotions for a specific offering",
@@ -51,10 +49,11 @@ public class PromotionController {
     public CollectionModel<PromotionType> getAvailablePromotions(@PathVariable OfferId offerId,
                                                                  @PathVariable Long offeringId) {
         OfferingKey offeringKey = OfferingKey.of(offerId, offeringId);
-        CollectionModel<PromotionType> availablePromotions = promotionServiceAdapter.getAvailablePromotions(offeringKey);
+        List<PromotionType> availablePromotions = promotionApplicationService.getAvailablePromotions(offeringKey);
+        CollectionModel<PromotionType> promotionModel = CollectionModel.of(availablePromotions);
 
-        availablePromotions.getContent().forEach(addApplyPromotionLink(offerId, offeringId, availablePromotions));
-        return availablePromotions;
+        promotionModel.getContent().forEach(addApplyPromotionLink(offerId, offeringId, promotionModel));
+        return promotionModel;
     }
 
     @Operation(summary = "Apply a promotion",
@@ -98,14 +97,13 @@ public class PromotionController {
     }
 
     private static Consumer<PromotionType> addApplyPromotionLink(OfferId offerId, Long offeringId,
-                                                                 CollectionModel<PromotionType> availablePromotions) {
-        return promotionType -> availablePromotions.add(buildApplyPromotionLink(offerId, offeringId,
-                promotionType));
+                                                                 CollectionModel<PromotionType> promotionModel) {
+        return type -> promotionModel.add(buildApplyPromotionLink(offerId, offeringId, type));
     }
 
-    private static Link buildApplyPromotionLink(OfferId offerId, Long offeringId, PromotionType promotionType) {
+    private static Link buildApplyPromotionLink(OfferId offerId, Long offeringId, PromotionType type) {
         return linkTo(methodOn(PromotionController.class)
-                .applyPromotion(offerId, offeringId, promotionType))
+                .applyPromotion(offerId, offeringId, type))
                 .withRel(REL_APPLY_PROMOTION);
     }
 
