@@ -17,6 +17,4 @@ public interface OfferReadRepository extends JpaRepository<Offer, Long> {
 
     List<OfferReadModel> findByApplicantId(ApplicantId applicantId);
 
-    boolean existsByApplicantId(ApplicantId applicantId);
-
 }

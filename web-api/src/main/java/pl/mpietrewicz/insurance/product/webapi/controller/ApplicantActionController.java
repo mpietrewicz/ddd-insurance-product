@@ -43,9 +43,7 @@ public class ApplicantActionController {
         RepresentationModel<?> model = new RepresentationModel<>();
         ApplicantId applicantId = applicantDataRequest.getApplicantId();
 
-        if (offerReadRepository.existsByApplicantId(applicantId)) {
-            model.add(getLinkToGetOffers(applicantId).withRel("offers"));
-        }
+        model.add(getLinkToGetOffers(applicantId).withRel("offers"));
 
         if (offerServiceAdapter.canCreateOffer(applicantDataRequest)) {
             model.add(getLinkToCreateOffer());
