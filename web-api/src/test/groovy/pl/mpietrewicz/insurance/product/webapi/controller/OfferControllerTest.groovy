@@ -6,7 +6,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.InsuredId
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId
-import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService
+import pl.mpietrewicz.insurance.product.domainapi.offer.OfferApplicationService
 import pl.mpietrewicz.insurance.product.webapi.dto.response.OfferModel
 import pl.mpietrewicz.insurance.product.webapi.dto.response.OfferingModel
 import pl.mpietrewicz.insurance.product.webapi.service.model.OfferModelService

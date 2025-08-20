@@ -3,12 +3,12 @@ package pl.mpietrewicz.insurance.product.webapi.service.adapter.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
-import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferServiceAdapter;
+import pl.mpietrewicz.insurance.product.domainapi.offer.OfferCreationUseCase;
 import pl.mpietrewicz.insurance.product.webapi.dto.converter.ApplicantDataConverter;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.ApplicantDataRequest;
 import pl.mpietrewicz.insurance.product.webapi.dto.request.CreateOfferRequest;
+import pl.mpietrewicz.insurance.product.webapi.service.adapter.OfferServiceAdapter;
 
 import java.time.LocalDate;
 
@@ -18,12 +18,12 @@ public class OfferServiceAdapterImpl implements OfferServiceAdapter {
 
     private final ApplicantDataConverter applicantDataConverter;
 
-    private final OfferApplicationService offerApplicationService;
+    private final OfferCreationUseCase offerCreationUseCase;
 
     @Override
     public boolean canCreateOffer(ApplicantDataRequest applicantDataRequest) {
         ApplicantData applicantData = applicantDataConverter.convert(applicantDataRequest);
-        return offerApplicationService.canCreateOffer(applicantData);
+        return offerCreationUseCase.canCreateOffer(applicantData);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class OfferServiceAdapterImpl implements OfferServiceAdapter {
         LocalDate startDate = createOfferRequest.getStartDate();
 
         ApplicantData applicantData = applicantDataConverter.convert(applicantDataRequest);
-        return offerApplicationService.createOffer(applicantData, startDate);
+        return offerCreationUseCase.createOffer(applicantData, startDate);
     }
 
 }

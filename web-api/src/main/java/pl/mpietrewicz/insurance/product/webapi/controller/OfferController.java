@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
-import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.offering.OfferingKey;
+import pl.mpietrewicz.insurance.product.domainapi.offer.OfferCreationUseCase;
 import pl.mpietrewicz.insurance.product.webapi.dto.response.OfferModel;
 import pl.mpietrewicz.insurance.product.webapi.service.model.OfferModelService;
 
@@ -29,7 +29,7 @@ import static pl.mpietrewicz.insurance.product.webapi.controller.OfferingControl
 @Tag(name = "Offers", description = "Managing offers")
 public class OfferController {
 
-    private final OfferApplicationService offerApplicationService;
+    private final OfferCreationUseCase offerCreationUseCase;
 
     private final OfferModelService offerModelService;
 
@@ -60,7 +60,7 @@ public class OfferController {
     })
     @DeleteMapping("/{offerId}")
     public ResponseEntity<RepresentationModel<?>> deleteOffer(@PathVariable OfferId offerId) {
-        offerApplicationService.deleteOffer(offerId);
+        offerCreationUseCase.deleteOffer(offerId);
 
         return ResponseEntity.noContent().build();
     }

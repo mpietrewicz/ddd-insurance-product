@@ -9,12 +9,12 @@ import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ApplicantId
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.OfferId;
 import pl.mpietrewicz.insurance.ddd.canonicalmodel.publishedlanguage.ProductId;
 import pl.mpietrewicz.insurance.ddd.sharedkernel.valueobject.Premium;
-import pl.mpietrewicz.insurance.product.domainapi.OfferApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.OfferingApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.ProductApplicationService;
 import pl.mpietrewicz.insurance.product.domainapi.dto.ApplicantData;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.InsuredRequirements;
 import pl.mpietrewicz.insurance.product.domainapi.dto.product.ProductData;
+import pl.mpietrewicz.insurance.product.domainapi.offer.OfferCreationUseCase;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,7 +34,7 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
 
     private final OfferingApplicationService offeringApplicationService;
 
-    private final OfferApplicationService offerApplicationService;
+    private final OfferCreationUseCase offerCreationUseCase;
 
     @Override
     public void run(String... args) throws Exception {
@@ -59,13 +59,13 @@ public class DevelopmentDataInitializer implements CommandLineRunner {
 
         log.info("Setting offers...");
         ApplicantData driverApplicant = prepareApplicantData("driver", "1978-08-20", false, "driver");
-        OfferId offerId = offerApplicationService.createOffer(driverApplicant, LocalDate.parse("2025-09-01"));
+        OfferId offerId = offerCreationUseCase.createOffer(driverApplicant, LocalDate.parse("2025-09-01"));
 
         ApplicantData nurseApplicant = prepareApplicantData("nurse", "1986-03-06", false, "nurse");
-        offerApplicationService.createOffer(nurseApplicant, LocalDate.parse("2025-07-01"));
+        offerCreationUseCase.createOffer(nurseApplicant, LocalDate.parse("2025-07-01"));
 
         ApplicantData analystApplicant = prepareApplicantData("analyst", "1969-09-01", true, "analyst");
-        offerApplicationService.createOffer(analystApplicant, LocalDate.parse("2025-06-01"));
+        offerCreationUseCase.createOffer(analystApplicant, LocalDate.parse("2025-06-01"));
 
         offeringApplicationService.addOffering(offerId, productNwId, SINGLE_PROMOTION);
         offeringApplicationService.addOffering(offerId, productTuId, DOUBLE_PROMOTION);
